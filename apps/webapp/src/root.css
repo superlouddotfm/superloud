@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    --interactive: theme('colors.interactive.6');
+    @apply bg-neutral-1 font-sans text-neutral-9 overflow-x-hidden;
+    scrollbar-color: var(--interactive) Canvas;
+    color-scheme: dark;
+  }
+
+  :root {
+    accent-color: var(--interactive);
+  }
+  :focus-visible {
+    outline-color: var(--interactive);
+  }
+  ::selection {
+    background-color: var(--interactive);
+  }
+  ::marker:not(li) {
+    color: var(--interactive);
+  }
+  *::selection {
+    @apply text-black;
+  }
+
+  :is(
+      ::-webkit-calendar-picker-indicator,
+      ::-webkit-clear-button,
+      ::-webkit-inner-spin-button,
+      ::-webkit-outer-spin-button
+    ) {
+    color: var(--interactive);
+  }
+
+  body {
+    @apply text-base flex flex-col min-h-screen;
+  }
+}
+
+@layer components {
+  .container {
+    @apply px-5 lg:px-3 w-full max-w-screen-lg;
+  }
+  .form-field--disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+  .input--invalid,
+  .input[aria-invalid='true'],
+  .input:not(:placeholder-shown, [type='datetime-local']):invalid,
+  .input[aria-invalid='true'][type='datetime-local'] {
+    @apply bg-negative-1 border-negative-4 focus:border-negative-6 placeholder:text-negative-4 text-negative-7 !important;
+  }
+}
