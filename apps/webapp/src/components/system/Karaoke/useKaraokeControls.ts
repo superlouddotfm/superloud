@@ -162,8 +162,6 @@ export function useKaraokeControls(config: {
   const [stateDialogSession, sendDialogSession] = useMachine(
     dialog.machine({
       id: createUniqueId(),
-      closeOnEsc: false,
-      closeOnOutsideClick: false,
     }),
   )
 

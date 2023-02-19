@@ -1,6 +1,6 @@
 import * as popover from '@zag-js/popover'
 import { normalizeProps, useMachine } from '@zag-js/solid'
-import { createEffect, createMemo, createUniqueId } from 'solid-js'
+import { createMemo, createUniqueId } from 'solid-js'
 import { IconClose } from '~/components/system/Icons'
 import type { JSX } from 'solid-js'
 

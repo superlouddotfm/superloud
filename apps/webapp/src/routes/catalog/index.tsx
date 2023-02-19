@@ -73,7 +73,7 @@ export default function Page() {
             </Match>
             <Match when={queryCatalog.isSuccess}>
               <Show when={queryCatalog?.data?.length > 0}>
-                <ul class="grid grid-cols-1 2xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
+                <ul class="gap-4 grid grid-cols-1 2xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
                   <For each={queryCatalog?.data}>
                     {(song) => (
                       <li class="relative border h-full bg-accent-1 border-accent-4 p-3 rounded-md">

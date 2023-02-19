@@ -20,6 +20,7 @@ export async function getArtistById(args: { id: `0x${string}` | string }) {
           edges {
             node {
               id
+              address
               artistProfilesByArtistId {
                 edges {
                   node {

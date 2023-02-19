@@ -20,7 +20,7 @@ async function uploadFileToIPFS(file: any) {
     const cid = result.path
     return `ipfs://${cid}`
   } catch (e) {
-    throw new Error(e)
+    console.error(e)
   }
 }
 
@@ -63,7 +63,7 @@ export function useListSong() {
 
         return transaction
       } catch (e) {
-        throw new Error(e)
+        console.error(e)
       }
     },
     {
@@ -81,7 +81,7 @@ export function useListSong() {
         const receipt = await tx.wait()
         return receipt
       } catch (e) {
-        throw new Error(e)
+        console.error(e)
       }
     },
     {
@@ -156,7 +156,7 @@ export function useListSong() {
   async function onSubmitNewSong(args: { formValues: FormValues }) {
     try {
       const signer = provider()?.getSigner()
-      if (!signer) throw new Error('Connect your wallet')
+      if (!signer) console.error('Connect your wallet')
       /**
        * Prepare data
        */
@@ -170,7 +170,7 @@ export function useListSong() {
         uriMetadata: uriMetadata as string,
       })
     } catch (e) {
-      throw new Error(e)
+      console.error(e)
     }
   }
 

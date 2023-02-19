@@ -1,11 +1,13 @@
 import { A } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
 import { ethers } from 'ethers'
+import { isAddress } from 'ethers/lib/utils.js'
 import { createEffect, For, Show } from 'solid-js'
 import Button from '~/components/system/Button'
 import { ROUTE_KARAOKE_PLAY_SONG } from '~/config/routes'
 import callToAction from '~/design-system/call-to-action'
 import type { SongMetadata } from '~/services/superloud/catalog/getSongById'
+import { Support } from '../Support'
 
 interface SongProps {
   metadata: SongMetadata
@@ -35,6 +37,7 @@ export const Song = (props: SongProps) => {
         }
     )
     */
+
   return (
     <>
       <div class="md:mt-7 min-h-[70vh] py-7 flex overflow-hidden relative -mx-4 px-4 bg-accent-12">
@@ -162,9 +165,12 @@ export const Song = (props: SongProps) => {
             </For>
           </ul>
         </section>
-        <section class="xl:absolute xl:inline-end-0 xl:top-0 xl:-translate-y-1/2 rounded-md bg-accent-1 p-6 shadow-lg border border-accent-4">
-          <h2 class="font-bold text-lg text-accent-12">Support the artist</h2>
-        </section>
+        <Show when={props?.metadata?.artist_address}>
+          <section class="rounded-md bg-accent-1 p-6 shadow-lg border border-accent-4">
+            <h2 class="font-bold xs:text-center text-lg text-accent-12 mb-3">Support the artist</h2>
+            <Support address={props?.metadata?.artist_address} />
+          </section>
+        </Show>
       </div>
     </>
   )

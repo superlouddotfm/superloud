@@ -38,7 +38,7 @@ export const LayoutBase = (props: any) => {
     <ToastProvider>
       <div class="flex flex-col relative grow md:flex-row">
         <nav class="fixed bottom-0 left-0 w-full border border-t-accent-4 md:border-t-transparent md:py-12 bg-accent-1 border-accent-6 md:bg-accent-4 md:h-screen md:w-16 md:border-ie md:border-accent-6 z-30">
-          <A class="text-2xl fixed top-4 md:top-4 inline-start-4" href={ROUTE_HOME}>
+          <A class="text-2xl fixed top-4 z-30 md:top-4 inline-start-4" href={ROUTE_HOME}>
             🎤
           </A>
           <div class="grid grid-cols-3 md:flex md:px-1.5 md:gap-6 md:h-full md:flex-col md:justify-center items-center">

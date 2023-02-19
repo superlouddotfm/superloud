@@ -31,6 +31,7 @@ export async function getSongById(args: { id: string | `0x${string}`; offset: nu
           artistId
           artistByArtistId {
             id
+            address
             artistProfilesByArtistId {
               edges {
                 node {

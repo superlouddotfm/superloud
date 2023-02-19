@@ -36,7 +36,7 @@ export const FormListSong = (props: FormListSongProps) => {
     options: {
       refetchOnWindowFocus: false,
       get enabled() {
-        return currentUser()?.address && ethers.utils.isAddress(currentUser()?.address) ? true : false
+        return currentUser()?.address ? true : false
       },
     },
   })

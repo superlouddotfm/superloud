@@ -2,10 +2,8 @@ import { createQuery } from '@tanstack/solid-query'
 import { fetchBalance } from '@wagmi/core'
 import * as menu from '@zag-js/menu'
 import { normalizeProps, useMachine } from '@zag-js/solid'
-import { isAddress } from 'ethers/lib/utils.js'
 import { createEffect, createMemo, createUniqueId, Match, Show, Switch } from 'solid-js'
 import Button from '~/components/system/Button'
-import { useTokenBalance } from '~/components/system/TokenBalance'
 import shortenEthereumAddress from '~/helpers/shortenEthereumAddress'
 import { useAuthentication } from '~/hooks/useAuthentication'
 
@@ -30,7 +28,7 @@ export const MenuCurrentUser = () => {
     },
     {
       get enabled() {
-        return isAddress(currentUser()?.address) ? true : false
+        return currentUser()?.address ? true : false
       },
     },
   )

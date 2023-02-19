@@ -14,9 +14,9 @@ export function routeData({ location, params }: RouteDataArgs) {
       })
       const artist = await getArtistById({ id: song?.original_song_artist_id })
       const original = await getOriginalSongById({ id: song?.original_song_id })
-      console.log(original)
       return {
         ...song,
+        artist_address: artist?.data?.allArtists?.edges?.[0]?.node?.address,
         artist_profiles: artist?.data?.allArtists?.edges?.[0]?.node?.artistProfilesByArtistId?.edges,
         original_song: {
           ...original?.data?.processedTrackById,

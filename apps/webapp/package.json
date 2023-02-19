@@ -69,6 +69,7 @@
     "solid-js": "^1.6.11",
     "solid-start": "^0.2.21",
     "solid-zustand": "^1.5.0",
+    "tailwindcss-logical": "^3.0.0",
     "undici": "^5.15.1",
     "util": "^0.12.5",
     "zod": "^3.20.6"
