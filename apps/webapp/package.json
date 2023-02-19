@@ -23,7 +23,6 @@
   "dependencies": {
     "@arcana/auth": "^1.0.1",
     "@arcana/auth-wagmi": "^0.0.2",
-    "@bundlr-network/client": "^0.10.3",
     "@felte/solid": "^1.2.7",
     "@felte/validator-zod": "^1.0.13",
     "@ffmpeg/ffmpeg": "^0.11.6",
@@ -69,15 +68,12 @@
     "process": "^0.11.10",
     "solid-js": "^1.6.11",
     "solid-start": "^0.2.21",
-    "solid-transition-group": "^0.0.13",
     "solid-zustand": "^1.5.0",
-    "tailwindcss-logical": "^3.0.0",
     "undici": "^5.15.1",
     "util": "^0.12.5",
-    "zod": "^3.20.6",
-    "zustand": "^4.3.3"
+    "zod": "^3.20.6"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }
