@@ -4,7 +4,7 @@ import { SPINAMP_API_ENDPOINT } from '../config'
  * Retrieve songs by keyword
  */
 export async function searchSongs(args: { query: string; offset: number; first: number }) {
-  const result = await fetch(SPINAMP_API_ENDPOINT, {
+  const response = await fetch(SPINAMP_API_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -26,6 +26,10 @@ export async function searchSongs(args: { query: string; offset: number; first: 
               supportingArtist
               title
               websiteUrl
+              artistByArtistId {
+                id
+                name
+              }
             }
           }
         }
@@ -38,7 +42,25 @@ export async function searchSongs(args: { query: string; offset: number; first: 
       },
     }),
   })
-
+  const result: {
+    data: {
+      allProcessedTracks: {
+        edges: Array<{
+          node: {
+            id: string
+            title: string
+            lossyAudioUrl: string
+            lossyArtworkUrl: string
+            description: string
+            artistByArtistId: {
+              id: string
+              name: string
+            }
+          }
+        }>
+      }
+    }
+  } = await response.json()
   return result
 }
 

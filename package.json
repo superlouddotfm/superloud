@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write \"**/*.{ts,tsx,md,css}\"",
-    "dev": "pnpm --stream -r dev"
+    "dev": "pnpm --stream -r app:dev"
   },
   "keywords": [],
   "author": "",

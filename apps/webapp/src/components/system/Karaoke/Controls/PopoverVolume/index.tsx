@@ -1,13 +1,14 @@
-import type { JSX } from 'solid-js'
 import * as popover from '@zag-js/popover'
 import { normalizeProps, useMachine } from '@zag-js/solid'
-import { createMemo, createUniqueId } from 'solid-js'
+import { createEffect, createMemo, createUniqueId } from 'solid-js'
 import { IconClose } from '~/components/system/Icons'
+import type { JSX } from 'solid-js'
 
 interface PopoverVolumeProps {
   apiSlider: any
   children: JSX.Element
   popoverLabel: JSX.Element
+  volume: number
 }
 
 export const PopoverVolume = (props: PopoverVolumeProps) => {
@@ -18,34 +19,59 @@ export const PopoverVolume = (props: PopoverVolumeProps) => {
     }),
   )
   const apiPopover = createMemo(() => popover.connect(statePopover, sendPopover, normalizeProps))
-
   return (
     <div class="relative">
-      <button class="z-50" {...apiPopover().triggerProps}>
+      <button
+        classList={{
+          'text-neutral-6': apiPopover().isOpen === false,
+          'text-interactive-10': apiPopover().isOpen === false,
+        }}
+        class="z-50"
+        {...apiPopover().triggerProps}
+      >
         {props.children}
       </button>
-      <div {...apiPopover().positionerProps} class="z-30 bg-white shadow p-2 rounded-lg">
-        <div class="flex items-center flex-col" {...apiPopover().contentProps}>
+      <div
+        {...apiPopover().positionerProps}
+        class="z-30 bg-interactive-1 bg-opacity-50 backdrop-blur-xl shadow-xl border-accent-5 border p-2 rounded-lg"
+      >
+        <div class="flex items-center w-full flex-col" {...apiPopover().contentProps}>
           <div class="sr-only" {...apiPopover().titleProps}>
             Track volume controls
           </div>
           <div class="sr-only" {...apiPopover().descriptionProps}>
             Control the volume of this track by moving the slider below.
           </div>
-          <div class="animate-appear pb-2" {...props.apiSlider().rootProps}>
+          <div class="animate-appear pb-2 group" {...props.apiSlider().rootProps}>
             <label class="sr-only" {...props.apiSlider().labelProps}>
               {props.popoverLabel}
             </label>
-            <output class="text-[0.7rem] font-medium text-interactive-9 inline" {...props.apiSlider().outputProps}>
-              {parseInt(props.apiSlider().value * 100)}%
+            <output
+              class="text-[0.7rem] font-medium text-interactive-11 inline pb-3"
+              {...props.apiSlider().outputProps}
+            >
+              {parseInt(props.apiSlider().value)}%
             </output>
-            <div class="pt-0.5 text-[0.7rem] w-7" {...props.apiSlider().controlProps}>
-              <div class="rounded-md h-32 w-full bg-interactive-1" {...props.apiSlider().trackProps}>
-                <div class="rounded-md w-full bg-interactive-5" {...props.apiSlider().rangeProps} />
+            <div {...props.apiSlider().controlProps} class="relative rounded-lg border border-interactive-7 rotate-180">
+              <div {...props.apiSlider().trackProps} class="w-8 h-48">
+                <div {...props.apiSlider().rangeProps} />
               </div>
-              <div class="w-full" {...props.apiSlider().thumbProps}>
+              <div
+                {...props.apiSlider().thumbProps}
+                style={{
+                  bottom: 'unset',
+                  top: `${props.apiSlider().value}%`,
+                }}
+                class="focus:data-[part=thumb]:ring-2 left-0 rounded -translate-y-1/2 absolute w-full h-2 bg-white shadow z-30"
+              >
                 <input {...props.apiSlider().hiddenInputProps} />
               </div>
+              <div
+                class="absolute top-0 left-0 w-full pointer-events-none rounded-md bg-interactive-10"
+                style={{
+                  height: `${props.apiSlider().value}%`,
+                }}
+              />
             </div>
           </div>
 

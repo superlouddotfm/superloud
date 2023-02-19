@@ -27,9 +27,10 @@ Superloud uses Spinamp API as its source of truth.
 ### How to...
 
 - `pnpm compile` - Compile smart contracts. The ABI will be available in `./build/contracts`
-- `pnpm deploy` - Deploy the smart contract to Polygon mumbai.
+- `pnpm truffle migrate --reset --network matic` - Deploy the smart contract to Polygon mumbai.
 
-You can edit the scripts in `package.json` as well as the deployment configuration in `truffle-config.js`.
+- `pnpm truffle run verify <CONTRACT NAMES> --network matic` - Verify contracts on Sourcify
+  You can edit the scripts in `package.json` as well as the deployment configuration in `truffle-config.js`.
 
 ## Tooling
 

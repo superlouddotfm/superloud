@@ -5,17 +5,19 @@ import type { VariantProps } from 'class-variance-authority'
 export const textField = cva(
   [
     'appearance-none focus:outline-none',
-    'border-solid border-opacity-10 disabled:border-opacity-20 disabled:hover:border-opacity-20 hover:border-opacity-25 focus:border-opacity-25',
-    'bg-opacity-3.5 focus:bg-opacity-7.5',
-    'input overflow-hidden text-ellipsis placeholder:text-opacity-30',
+    'border-solid',
+    'focus:ring-2',
+    'input overflow-hidden text-ellipsis placeholder:text-opacity-50',
     'disabled:opacity-50 disabled:cursor-not-allowed',
   ],
   {
     variants: {
       intent: {
-        default: ['placeholder:text-neutral-8 bg-neutral-3 text-neutral-10 border-neutral-8'],
+        default: [
+          'placeholder:text-accent-11 bg-accent-1 hover:bg-opacity-3.5 focus:bg-accent-12:bg-opacity-5  text-accent-12 border-accent-8',
+        ],
         'pseudo-disabled':
-          'placeholder:text-neutral-8 bg-neutral-2 text-neutral-10 border-neutral-4 opacity-50 pointer-events-none border-opacity-20 hover:border-opacity-20',
+          'placeholder:text-accent-12 bg-accent-12 text-accent-12 border-accent-12 opacity-50 pointer-events-none border-opacity-20 hover:border-opacity-20',
         error: ['input--invalid'],
       },
       scale: {

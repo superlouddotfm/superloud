@@ -33,7 +33,7 @@ const Label = (props: FormLabelProps) => {
 
   return (
     <label class={formFieldLabel({ class: local?.class ?? '' })} {...labelProps}>
-      {local?.hasError && <IconExclamationCircle class="w-6 self-center animate-appear text-negative-6 mie-1" />}
+      {local?.hasError && <IconExclamationCircle class="w-6 self-center animate-appear text-negative-9 mie-1" />}
       {local?.children}
     </label>
   )

@@ -20,7 +20,12 @@ import { any, boolean, object, string } from 'zod'
 
 export const createOrEditSongSchema = object({
   // Basic information
+  id_original_song: string(),
+  id_original_song_from_artist_discography: string().optional(),
+  text_query_search_song_by_keyword: string().trim().optional(),
   title: string().trim().min(1),
+  genre: string(),
+  description: string().trim().optional(),
   is_listed: boolean(),
 
   // LRC file
@@ -32,11 +37,8 @@ export const createOrEditSongSchema = object({
   isolated_vocal_track_uri: string().optional(),
 
   // Intrumental track
-  instrumental_track_file: any().optional(),
-  instrumental_track_uri: string().optional(),
-
-  // Lyrics video
-  lyrics_video_uri: string().optional(),
+  isolated_instrumental_track_file: any().optional(),
+  isolated_instrumental_track_uri: string().optional(),
 })
 
 export default createOrEditSongSchema

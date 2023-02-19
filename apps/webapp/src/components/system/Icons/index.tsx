@@ -143,6 +143,17 @@ export const IconPlayNext = (props: SVGProps) => {
   )
 }
 
+export const IconPlaylistAdd = (props: SVGProps) => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M2 5H14V7H2V5Z" fill="currentColor" />
+      <path d="M2 9H14V11H2V9Z" fill="currentColor" />
+      <path d="M10 13H2V15H10V13Z" fill="currentColor" />
+      <path d="M16 9H18V13H22V15H18V19H16V15H12V13H16V9Z" fill="currentColor" />
+    </svg>
+  )
+}
+
 export const IconPlaylist = (props: SVGProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -208,6 +219,177 @@ export const IconRecording = (props: SVGProps) => {
         clip-rule="evenodd"
         d="M1.5 8C1.5 6.34315 2.84315 5 4.5 5H19.5C21.1569 5 22.5 6.34315 22.5 8V16C22.5 17.6569 21.1569 19 19.5 19H4.5C2.84315 19 1.5 17.6569 1.5 16V8ZM4.5 7H19.5C20.0523 7 20.5 7.44772 20.5 8V16C20.5 16.5523 20.0523 17 19.5 17H4.5C3.94772 17 3.5 16.5523 3.5 16V8C3.5 7.44772 3.94772 7 4.5 7Z"
         fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+export const IconTwitch = (props: SVGProps) => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      stroke-width="0"
+      viewBox="0 0 16 16"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0H3.857zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142v6.286z"></path>
+      <path d="M11.857 3.143h-1.143V6.57h1.143V3.143zm-3.143 0H7.571V6.57h1.143V3.143z"></path>
+    </svg>
+  )
+}
+
+export const IconBolt = (props: SVGProps) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path
+        fill-rule="evenodd"
+        d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  )
+}
+
+export const IconBrowser = (props: SVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      {...props}
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M3 8.25V18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 18V8.25m-18 0V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6zM7.5 6h.008v.008H7.5V6zm2.25 0h.008v.008H9.75V6z"
+      />
+    </svg>
+  )
+}
+
+export const IconCheck = (props: SVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      {...props}
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  )
+}
+
+export const IconError = (props: SVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      {...props}
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+      />
+    </svg>
+  )
+}
+
+export const IconCatalog = (props: SVGProps) => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M4 5.5H9C10.1046 5.5 11 6.39543 11 7.5V16.5C11 17.0523 10.5523 17.5 10 17.5H4C3.44772 17.5 3 17.0523 3 16.5V6.5C3 5.94772 3.44772 5.5 4 5.5ZM14 19.5C13.6494 19.5 13.3128 19.4398 13 19.3293V19.5C13 20.0523 12.5523 20.5 12 20.5C11.4477 20.5 11 20.0523 11 19.5V19.3293C10.6872 19.4398 10.3506 19.5 10 19.5H4C2.34315 19.5 1 18.1569 1 16.5V6.5C1 4.84315 2.34315 3.5 4 3.5H9C10.1947 3.5 11.2671 4.02376 12 4.85418C12.7329 4.02376 13.8053 3.5 15 3.5H20C21.6569 3.5 23 4.84315 23 6.5V16.5C23 18.1569 21.6569 19.5 20 19.5H14ZM13 7.5V16.5C13 17.0523 13.4477 17.5 14 17.5H20C20.5523 17.5 21 17.0523 21 16.5V6.5C21 5.94772 20.5523 5.5 20 5.5H15C13.8954 5.5 13 6.39543 13 7.5ZM5 7.5H9V9.5H5V7.5ZM15 7.5H19V9.5H15V7.5ZM19 10.5H15V12.5H19V10.5ZM5 10.5H9V12.5H5V10.5ZM19 13.5H15V15.5H19V13.5ZM5 13.5H9V15.5H5V13.5Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+export const IconSingingMic = (props: SVGProps) => {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="none"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      height="24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <desc></desc>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M15.002 12.9a5 5 0 1 0 -3.902 -3.9"></path>
+      <path d="M15.002 12.9l-3.902 -3.899l-7.513 8.584a2 2 0 1 0 2.827 2.83l8.588 -7.515z"></path>
+    </svg>
+  )
+}
+
+export const IconFolderOpen = (props: SVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      {...props}
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"
+      />
+    </svg>
+  )
+}
+
+export const IconDoubleChevronDown = (props: SVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      {...props}
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
+    </svg>
+  )
+}
+
+export const IconExternal = (props: SVGProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      {...props}
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
       />
     </svg>
   )

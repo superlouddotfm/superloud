@@ -1,0 +1,27 @@
+type KaraokeVersion @entity(immutable: true) {
+  id: Bytes!
+  id_karaoke_version: Bytes!
+  created_at: BigInt!
+  curator_address: Bytes!
+  id_original_version: String!
+  uri_metadata: String!
+  is_indexed: Boolean!
+  metadata: metadataKaraokeVersion
+}
+
+type metadataKaraokeVersion @entity(immutable: false) {
+  id: ID!
+  original_song_id: String!
+  original_song_title: String!
+  original_song_artist_id: String!
+  original_song_artist_name: String!
+  original_song_artwork_url: String!
+  original_song_audio_url: String!
+  original_song_supporting_artist: String!
+  title: String!
+  description: String!
+  uri_isolated_vocal_track: String!
+  uri_isolated_instrumental_track: String!
+  uri_lrc: String!
+  genre: String!
+}

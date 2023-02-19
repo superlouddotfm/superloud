@@ -3,7 +3,12 @@ import { QueryClientProvider } from '@tanstack/solid-query'
 import { Suspense } from 'solid-js'
 import { useLocation, A, Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start'
 import { queryClient } from '~/config/query-client'
+import { ProviderAuthentication } from './hooks/useAuthentication'
+import { LayoutBase } from './layouts/LayoutBase'
+import { Buffer } from 'buffer'
 import './root.css'
+
+window.Buffer = window.Buffer || Buffer
 
 export default function Root() {
   const location = useLocation()
@@ -20,20 +25,14 @@ export default function Root() {
       <Body>
         <Suspense>
           <ErrorBoundary>
-            <nav class="bg-sky-800">
-              <ul class="container flex items-center p-3 text-gray-200">
-                <li class={`border-b-2 ${active('/')} mx-1.5 sm:mx-6`}>
-                  <A href="/">Home</A>
-                </li>
-                <li class={`border-b-2 ${active('/about')} mx-1.5 sm:mx-6`}>
-                  <A href="/about">About</A>
-                </li>
-              </ul>
-            </nav>
             <QueryClientProvider client={queryClient}>
-              <Routes>
-                <FileRoutes />
-              </Routes>
+              <ProviderAuthentication>
+                <LayoutBase>
+                  <Routes>
+                    <FileRoutes />
+                  </Routes>
+                </LayoutBase>
+              </ProviderAuthentication>
             </QueryClientProvider>
           </ErrorBoundary>
         </Suspense>

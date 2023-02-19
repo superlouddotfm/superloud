@@ -9,13 +9,14 @@ export const callToAction = cva(
     'rounded-full',
     'transition-colors transition-500',
     'disabled:!opacity-50 disabled:pointer-events-none',
+    'focus:outline-none focus:ring-4 focus:ring-offset-2',
   ],
   {
     variants: {
       intent: {
         primary: [
-          'bg-primary-2 hover:bg-primary-1 focus:bg-primary-3 hover:focus:bg-opacity-95',
-          'text-primary-10',
+          'bg-primary-10 hover:bg-primary-9 focus:bg-primary-11 hover:focus:bg-opacity-95',
+          'text-primary-3',
           'border-transparent',
         ],
         'primary-outline': [
@@ -25,6 +26,9 @@ export const callToAction = cva(
         ],
         'primary-ghost': [
           'border-transparent bg-primary-10 bg-opacity-0 text-primary-10 hover:bg-opacity-10 focus:border-transparent focus:bg-opacity-100 focus:text-primary-1',
+        ],
+        'primary-faint': [
+          'border-transparent  bg-primary-4 bg-opacity-75 text-primary-9 hover:bg-opacity-50 focus:border-transparent focus:bg-opacity-100 focus:text-primary-11',
         ],
         'interactive-ghost': [
           'border-transparent bg-interactive-10 bg-opacity-0 text-interactive-10 hover:bg-opacity-10 focus:border-transparent focus:bg-opacity-100 focus:text-interactive-1',
@@ -48,21 +52,18 @@ export const callToAction = cva(
           'border-transparent bg-negative-11 bg-opacity-0 text-negative-11 hover:bg-opacity-10 focus:border-transparent focus:bg-opacity-100 focus:text-negative-1',
         ],
         'neutral-on-light-layer': [
-          'border-transparent bg-black text-white hover:bg-neutral-12 hover:border-black focus:border-black hover:border-opacity-50 focus:border-opacity-50 focus:bg-white hover:text-black focus:text-black',
+          'border-transparent bg-accent-12 text-accent-1 hover:bg-neutral-12 hover:border-accent-12 focus:border-accent-12 hover:border-opacity-50 focus:border-opacity-50 focus:bg-accent-1 hover:text-accent-1 focus:text-accent-12',
         ],
         'neutral-on-dark-layer': [
-          'border-transparent bg-white text-black hover:bg-neutral-2 hover:border-white focus:border-white  focus:bg-neutral1 hover:text-neutral-12 focus:text-neutral-1 focus:hover:text-neutral-12',
+          'border-transparent bg-accent-1 text-accent-12 hover:bg-accent-2 hover:border-accent-1 focus:border-accent-2  focus:bg-accent-12 hover:text-neutral-12 focus:text-accent-1 focus:hover:text-accent-2',
         ],
 
         'neutral-outline': [
-          'border-neutral-9 hover:border-neutral-10 focus:border-white bg-white bg-opacity-0 text-neutral-12 hover:bg-opacity-10 focus:border-transparent focus:bg-opacity-100 focus:text-black',
-        ],
-        'neutral-outline-solid': [
-          'border-neutral-5 hover:border-neutral-6 focus:border-neutral-8 bg-black hover:bg-neutral-2 focus:bg-neutral-1 text-white',
+          'bg-accent-1 border-accent-7 hover:border-accent-8 focus:bg-accent-2 focus:border-accent-9  text-accent-11 focus:text-accent-12',
         ],
 
         'neutral-ghost': [
-          'border-transparent bg-white bg-opacity-0 text-white hover:bg-opacity-10 focus:border-transparent focus:bg-opacity-100 focus:text-black',
+          'border-transparent bg-white bg-opacity-0 text-white hover:bg-opacity-10 focus:border-transparent focus:bg-opacity-100 focus:text-accent-12',
         ],
       },
       scale: {

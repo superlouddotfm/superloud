@@ -18,7 +18,7 @@ Finally, artists can use Superloud to help finance good causes by making their c
 - `apps/webapp` - Superloud front-end (webapp - SolidStart, wagmi)
 - `apps/smartcontracts-solidity/*` - Superloud solidity smart contracts (Catalog & Challenges)
 - `apps/smartcontracts-warp/*` - Superloud Warp (Smartweave) smart contracts (Voting)
-- `apps/subgraph-catalog` - Subgraph for the karaoke catalog
+- `apps/subgraph-catalog` - Subgraph for the karaoke catalog ([hosted service](https://thegraph.com/hosted-service/subgraph/naomihauret/superloud-catalog-mumbai))
 - `apps/subgraph-challenges` - Subgraph for the karaoke challenges
 
 ## Tech stack overview
@@ -51,4 +51,8 @@ Finally, artists can use Superloud to help finance good causes by making their c
 
 ## Deployed contracts
 
-- `SuperloudCatalog.sol` - Deployed on Mumbai: `0x49dD1c27100acDe5af60D5Bbd0a615c952bE2C5d` ; [view on Sourcify](https://repo.sourcify.dev/contracts/full_match/80001/0x49dD1c27100acDe5af60D5Bbd0a615c952bE2C5d/sources/project_/contracts/)
+- `SuperloudCatalog.sol` - Deployed on Mumbai: `0xFD722E360eEAC232593DEd6bAbD433b1d97e528E` ; [view on Sourcify](https://repo.sourcify.dev/contracts/full_match/80001/0xFD722E360eEAC232593DEd6bAbD433b1d97e528E/sources/project_/contracts/)
+
+## Chainlink adapters
+
+- Example request: `curl -X POST -H "content-type:application/json" "https://chainlink-adapter-spinamp-api.fly.dev/" --data '{ "id": 1, "data": { "idSong":"ethereum/0x003d03980d2d4332e5f92e54905a694c614df36f/1" } }'`

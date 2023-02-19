@@ -1,7 +1,9 @@
+import { SignIn } from '~/components/_pages/SignIn'
+
 export default function Page() {
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">sign in Page</h1>
-    </main>
+    <div class="max-w-screen-2xs w-full m-auto animate-appear">
+      <SignIn />
+    </div>
   )
 }

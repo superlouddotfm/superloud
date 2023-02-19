@@ -4,7 +4,7 @@ import { SPINAMP_API_ENDPOINT } from '../config'
  * Retrieve songs by artist  id
  */
 export async function getSongsByArtistId(args: { id: string | `0x${string}`; offset: number; first: number }) {
-  const result = await fetch(SPINAMP_API_ENDPOINT, {
+  const response = await fetch(SPINAMP_API_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,6 +34,12 @@ export async function getSongsByArtistId(args: { id: string | `0x${string}`; off
               lossyAudioUrl
               lossyArtworkUrl
               description
+              artistByArtistId {
+                id
+                name
+              }
+              supportingArtist 
+
             }
           }
         }
@@ -46,7 +52,25 @@ export async function getSongsByArtistId(args: { id: string | `0x${string}`; off
       },
     }),
   })
-
+  const result: {
+    data: {
+      allProcessedTracks: {
+        edges: Array<{
+          node: {
+            id: string
+            title: string
+            lossyAudioUrl: string
+            lossyArtworkUrl: string
+            description: string
+            artistByArtistId: {
+              id: string
+              name: string
+            }
+          }
+        }>
+      }
+    }
+  } = await response.json()
   return result
 }
 

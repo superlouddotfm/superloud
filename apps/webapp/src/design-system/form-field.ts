@@ -1,13 +1,13 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
 
-export const formFieldLabel = cva(['flex font-bold items-center'], {
+export const formFieldLabel = cva(['flex text-[1.015em] font-bold items-center'], {
   variants: {
     intent: {
       default: ['text-neutral-12'],
     },
     scale: {
-      default: ['pb-2'],
+      default: ['leading-loose'],
     },
   },
   defaultVariants: {

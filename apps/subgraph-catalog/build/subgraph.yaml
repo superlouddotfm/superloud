@@ -1,0 +1,39 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+features:
+  - ipfsOnEthereumContracts
+dataSources:
+  - kind: ethereum
+    name: SuperloudCatalog
+    network: mumbai
+    source:
+      address: "0xFD722E360eEAC232593DEd6bAbD433b1d97e528E"
+      abi: SuperloudCatalog
+      startBlock: 32174029
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - KaraokeVersion
+      abis:
+        - name: SuperloudCatalog
+          file: SuperloudCatalog/abis/SuperloudCatalog.json
+      eventHandlers:
+        - event: ListNewKaraokeVersion(bytes32,uint256,address,string,string,bool)
+          handler: handleListNewKaraokeVersion
+      file: SuperloudCatalog/SuperloudCatalog.wasm
+templates:
+  - name: KaraokeVersionMetadataTemplate
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: templates/KaraokeVersionMetadataTemplate/KaraokeVersionMetadataTemplate.wasm
+      handler: handleMetadata
+      entities:
+        - metadataKaraokeVersion
+      abis:
+        - name: SuperloudCatalog
+          file: KaraokeVersionMetadataTemplate/abis/SuperloudCatalog.json

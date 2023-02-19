@@ -3,6 +3,7 @@ import { Match, Show, Switch } from 'solid-js'
 import { AudioState } from '@solid-primitives/audio'
 import { Lyrics, Controls, useKaraokeControls } from '~/components/system/Karaoke'
 import { IconSpinner } from '~/components/system/Icons'
+import { Portal } from 'solid-js/web'
 
 export const PreviewKaraoke = (props: KaraokeScreenProps) => {
   const { isPlaying, time, instrumental, vocals, lyrics } = useKaraokeControls(props.configKaraokeControls)
@@ -22,20 +23,15 @@ export const PreviewKaraoke = (props: KaraokeScreenProps) => {
           </div>
         </Match>
         <Match when={lyrics.loaded() === true}>
-          <div class='relative'>
-          <div class='fixed inset-0 h-full w-full'>
-              <div class='absolute bottom-0'>
-                <div class='sticky bottom-0 left-0'
+          <Portal>
+            <div class="animate-appear border-t border-accent-5 fixed z-30 bottom-0 left-0 bg-white py-2 w-full">
               <Controls isPlaying={isPlaying} time={time} vocals={vocals} instrumental={instrumental} />
-</div>
-              </div>
-          </div>
-
+            </div>
+          </Portal>
           <Show when={props.configKaraokeControls.lyrics.display === true}>
             {/* @ts-ignore */}
             <Lyrics lyrics={lyrics} isKaraokePlaying={isPlaying()} />
           </Show>
-          </div>
         </Match>
       </Switch>
     </>

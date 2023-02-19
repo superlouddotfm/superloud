@@ -38,9 +38,9 @@ export const Lyrics = (props: LyricsProps) => {
             <p
               id={`line-${i()}`}
               classList={{
-                'text-neutral-4': local.isKaraokePlaying === false || i() < local.lyrics.currentLine()?.index,
-                'text-interactive-6 font-bold': local.lyrics.currentLine()?.index === i(),
-                'font-semibold': local.lyrics.currentLine()?.index !== i(),
+                'text-accent-8': local.isKaraokePlaying === false || i() < local.lyrics.currentLine()?.index,
+                'text-interactive-11 font-bold': local.lyrics.currentLine()?.index === i(),
+                'font-semibold text-neutral-7': local.lyrics.currentLine()?.index !== i(),
               }}
               class="text-lg leading-loose transition-colors"
             >

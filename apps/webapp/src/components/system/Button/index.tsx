@@ -20,7 +20,14 @@ export const Button = (props: ButtonProps) => {
       aria-disabled={buttonProps.disabled || local.isLoading === true}
       {...buttonProps}
     >
-      {local.isLoading && <IconSpinner class="animate-spin mie-1ex" />}
+      {local.isLoading && (
+        <IconSpinner
+          classList={{
+            'mie-1ex': local?.class?.includes('rounded-full'),
+          }}
+          class="animate-spin"
+        />
+      )}
       {local.children}
     </button>
   )

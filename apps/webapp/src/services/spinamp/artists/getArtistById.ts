@@ -5,7 +5,7 @@ import { SPINAMP_API_ENDPOINT } from '../config'
  * @param args: - { id } Ethereum address or ID
  */
 export async function getArtistById(args: { id: `0x${string}` | string }) {
-  const result = await fetch(SPINAMP_API_ENDPOINT, {
+  const response = await fetch(SPINAMP_API_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,10 +23,10 @@ export async function getArtistById(args: { id: `0x${string}` | string }) {
               artistProfilesByArtistId {
                 edges {
                   node {
-                    platformInternalId
                     name
                     avatarUrl
                     websiteUrl
+                    platformId
                   }
                 }
               }
@@ -40,7 +40,7 @@ export async function getArtistById(args: { id: `0x${string}` | string }) {
       },
     }),
   })
-
+  const result = await response.json()
   return result
 }
 

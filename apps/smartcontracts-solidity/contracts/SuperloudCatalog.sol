@@ -14,8 +14,7 @@ contract SuperloudCatalog {
     uint256 created_at;
     address curator;
     string id_original_version;
-    string uri_original_version_metadata;
-    string uri_karaoke_version_metadata;
+    string uri_metadata;
     bool is_indexed;
     bool exists;
   }
@@ -34,12 +33,11 @@ contract SuperloudCatalog {
     uint256 created_at,
     address curator_address,
     string id_original_version,
-    string uri_original_version_metadata,
-    string uri_karaoke_version_metadata,
+    string uri_metadata,
     bool is_indexed
   );
 
-  event UpdateListedKaraokeVersion(bytes32 id_karaoke_version, string uri_karaoke_version_metadata, bool is_indexed);
+  event UpdateListedKaraokeVersion(bytes32 id_karaoke_version, string uri_metadata, bool is_indexed);
 
   // Array of all listed songs ids
   bytes32[] private _listed_karaoke_versions_ids;
@@ -83,20 +81,12 @@ contract SuperloudCatalog {
   */
   function listNewKaraokeVersion(
     string memory id_original_version,
-    string memory uri_original_version_metadata,
-    string memory uri_karaoke_version_metadata,
+    string memory uri_metadata,
     uint256 created_at
   ) external {
     // Create a unique identifier for the song
     bytes32 id_karaoke_version = keccak256(
-      abi.encodePacked(
-        msg.sender,
-        address(this),
-        id_original_version,
-        uri_original_version_metadata,
-        uri_karaoke_version_metadata,
-        created_at
-      )
+      abi.encodePacked(msg.sender, address(this), id_original_version, uri_metadata, created_at)
     );
 
     // Check is the karaoke version was already listed in the catalog
@@ -124,12 +114,10 @@ contract SuperloudCatalog {
       msg.sender,
       // Id of the original version (from Spinamp API)
       id_original_version,
-      // URI of the original song (eg: ipfs://<cid> ; ar://<arweave-tx-id> ; https://<some-website> etc. etc.)
-      uri_original_version_metadata,
       // URI of the metadata of our karaoke version (eg: ipfs://<cid> ; ar://<arweave-tx-id> ; https://<some-website> etc. etc.)
       // Note: this will be used by The Graph
       // So it's better to host the metadata on IPFS with Infura
-      uri_karaoke_version_metadata,
+      uri_metadata,
       // If the song is indexed or not
       // (indexed song = visible on the front-end ; unindexed songs are not visible on the front-end)
       true,
@@ -137,15 +125,7 @@ contract SuperloudCatalog {
       true
     );
 
-    emit ListNewKaraokeVersion(
-      id_karaoke_version,
-      created_at,
-      msg.sender,
-      id_original_version,
-      uri_original_version_metadata,
-      uri_karaoke_version_metadata,
-      true
-    );
+    emit ListNewKaraokeVersion(id_karaoke_version, created_at, msg.sender, id_original_version, uri_metadata, true);
   }
 
   /*
@@ -156,7 +136,7 @@ contract SuperloudCatalog {
   function updateKaraokeVersion(
     bytes32 id_karaoke_version,
     bool is_indexed,
-    string memory uri_karaoke_version_metadata_updated
+    string memory uri_metadata_updated
   ) external {
     require(
       msg.sender == owner() || msg.sender == id_karaoke_version_to_listed_song[id_karaoke_version].curator,
@@ -179,19 +159,11 @@ contract SuperloudCatalog {
     }
 
     // If metadata uri of the karaoke version
-    if (
-      keccak256(abi.encodePacked(song_to_update.uri_karaoke_version_metadata)) !=
-      keccak256(abi.encodePacked(uri_karaoke_version_metadata_updated))
-    ) {
-      id_karaoke_version_to_listed_song[id_karaoke_version]
-        .uri_karaoke_version_metadata = uri_karaoke_version_metadata_updated;
+    if (keccak256(abi.encodePacked(song_to_update.uri_metadata)) != keccak256(abi.encodePacked(uri_metadata_updated))) {
+      id_karaoke_version_to_listed_song[id_karaoke_version].uri_metadata = uri_metadata_updated;
     }
     KaraokeVersion storage updated_song = id_karaoke_version_to_listed_song[id_karaoke_version];
-    emit UpdateListedKaraokeVersion(
-      id_karaoke_version,
-      updated_song.uri_karaoke_version_metadata,
-      updated_song.is_indexed
-    );
+    emit UpdateListedKaraokeVersion(id_karaoke_version, updated_song.uri_metadata, updated_song.is_indexed);
   }
 
   /*
@@ -289,19 +261,11 @@ contract SuperloudCatalog {
       bytes32 id_karaoke_version,
       uint256 created_at,
       address curator,
-      string memory uri_original_version_metadata,
-      string memory uri_karaoke_version_metadata,
+      string memory uri_metadata,
       bool is_indexed
     )
   {
     KaraokeVersion memory _song = id_karaoke_version_to_listed_song[id];
-    return (
-      id,
-      _song.created_at,
-      _song.curator,
-      _song.uri_original_version_metadata,
-      _song.uri_karaoke_version_metadata,
-      _song.is_indexed
-    );
+    return (id, _song.created_at, _song.curator, _song.uri_metadata, _song.is_indexed);
   }
 }
