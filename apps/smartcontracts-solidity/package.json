@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+ "license": "GPL-3.0",
   "devDependencies": {
     "@truffle/hdwallet-provider": "^2.1.6",
     "dotenv": "^16.0.3",

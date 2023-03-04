@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "@chainlink/external-adapter": "^0.2.6",
     "body-parser": "^1.20.1",
