@@ -502,12 +502,12 @@ export const CreateNewSong = () => {
                                   mutationUploadVocalTrack.status,
                                 ].includes('error')}
                               >
-                                <div class="mb-4 animate-appear rounded-md text-2xs p-3 text-negative-11 border border-negative-5 bg-negative-3">
+                                <div class="mb-4 rounded-md text-2xs p-3 text-negative-11 border border-negative-5 bg-negative-3">
                                   <p class="font-semibold">Something went wrong.</p>
                                 </div>
                               </Match>
                               <Match when={mutationTxWaitCreateNewSong?.isSuccess}>
-                                <div class="my-4 text-2xs rounded-md animate-appear p-3 text-positive-11 border border-positive-5 bg-positive-3">
+                                <div class="my-4 text-2xs rounded-md p-3 text-positive-11 border border-positive-5 bg-positive-3">
                                   <p class="font-semibold">
                                     Your song was listed on the Superloud karaoke catalog successfully !
                                   </p>

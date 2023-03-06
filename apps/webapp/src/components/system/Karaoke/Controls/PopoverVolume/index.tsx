@@ -42,7 +42,7 @@ export const PopoverVolume = (props: PopoverVolumeProps) => {
           <div class="sr-only" {...apiPopover().descriptionProps}>
             Control the volume of this track by moving the slider below.
           </div>
-          <div class="animate-appear pb-2 group" {...props.apiSlider().rootProps}>
+          <div class="pb-2 group" {...props.apiSlider().rootProps}>
             <label class="sr-only" {...props.apiSlider().labelProps}>
               {props.popoverLabel}
             </label>

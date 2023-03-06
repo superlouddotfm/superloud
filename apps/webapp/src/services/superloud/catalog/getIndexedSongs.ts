@@ -31,12 +31,26 @@ export async function getIndexedSongs(args: {
       where: {
           curator_address_contains: $curatorAddress
           metadata_: {
+            or: [{
               title_contains_nocase: $query
+            },
+            { 
               original_song_title_contains_nocase: $query
+            },
+            { 
               original_song_artist_name_contains_nocase: $query
+            },
+            { 
               original_song_supporting_artist_contains_nocase: $query
+            },
+            { 
               description_contains_nocase: $query
-              genre_contains_nocase: $genre
+            },
+            { 
+              genre_contains_nocase: $query
+            },
+          ]
+              
             }
           }) {
           id

@@ -61,7 +61,7 @@ export const LayoutBase = (props: any) => {
               }}
             </For>
           </div>
-          <div class="pointer-events-none bg-accent-2 md:bg-transparent py-4 md:pt-12 animate-appear fixed top-0  inline-start-0 w-full">
+          <div class="pointer-events-none bg-accent-2 md:bg-transparent py-4 md:pt-12 fixed top-0  inline-start-0 w-full">
             <div class="container mx-auto flex justify-end">
               <Switch>
                 <Match when={!isAuthenticated() && location.pathname !== ROUTE_SIGN_IN}>

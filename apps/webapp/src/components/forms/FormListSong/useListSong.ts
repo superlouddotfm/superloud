@@ -1,9 +1,7 @@
 import { createMutation, useQueryClient } from '@tanstack/solid-query'
 import { createOrEditSongSchema as schema } from '~/schemas/create-or-edit-song'
 import { z } from 'zod'
-import { useAuthentication } from '~/hooks/useAuthentication'
 import { ipfsClient } from '~/config/ipfs'
-import { ethers } from 'ethers'
 import { ABI_SUPERLOUD_CATALOG, SUPERLOUD_CATALOG_CONTRACT_ADDRESS } from '~/abi/superloudCatalog'
 import { getUnixTime } from 'date-fns'
 import { useToast } from '~/hooks/useToast'
@@ -11,6 +9,7 @@ import * as popover from '@zag-js/popover'
 import * as accordion from '@zag-js/accordion'
 import { useMachine, normalizeProps } from '@zag-js/solid'
 import { createEffect, createMemo, createUniqueId } from 'solid-js'
+import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core'
 
 interface FormValues extends z.infer<typeof schema> {}
 
@@ -26,7 +25,6 @@ async function uploadFileToIPFS(file: any) {
 
 export function useListSong() {
   const queryClient = useQueryClient()
-  const { provider } = useAuthentication()
   // UI
   const toast = useToast()
   const [statePopover, sendPopover] = useMachine(popover.machine({ id: createUniqueId(), portalled: true }))
@@ -35,8 +33,6 @@ export function useListSong() {
   const apiAccordionListSongStatus = createMemo(() => accordion.connect(stateAccordion, sendAccordion, normalizeProps))
 
   // Mutations
-  const mutationCreateNewSong = createMutation(async (values) => {})
-  const mutationEditSong = createMutation(async (values) => {})
   const mutationUploadInstrumentalTrack = createMutation(uploadFileToIPFS)
   const mutationUploadVocalTrack = createMutation(uploadFileToIPFS)
   const mutationUploadLRC = createMutation(uploadFileToIPFS)
@@ -48,37 +44,31 @@ export function useListSong() {
   const mutationWriteContractCreateNewSong = createMutation(
     async (args: { idOriginalVersion: string; uriMetadata: string }) => {
       try {
-        const signer = provider()?.getSigner()
-        const contractSuperloudCatalog = new ethers.Contract(
-          SUPERLOUD_CATALOG_CONTRACT_ADDRESS,
-          ABI_SUPERLOUD_CATALOG,
-          signer,
-        )
-
-        const transaction = await contractSuperloudCatalog.listNewKaraokeVersion(
-          args.idOriginalVersion,
-          args.uriMetadata,
-          getUnixTime(new Date()),
-        )
-
-        return transaction
+        const config = await prepareWriteContract({
+          address: SUPERLOUD_CATALOG_CONTRACT_ADDRESS,
+          abi: ABI_SUPERLOUD_CATALOG,
+          functionName: 'listNewKaraokeVersion',
+          args: [args.idOriginalVersion, args.uriMetadata, getUnixTime(new Date())],
+        })
+        const transaction = await writeContract(config)
+        return transaction.hash
       } catch (e) {
         console.error(e)
       }
     },
     {
-      async onSuccess(data) {
+      async onSuccess(data: `0x${string}`) {
         await mutationTxWaitCreateNewSong.mutateAsync(data)
       },
     },
   )
 
   const mutationTxWaitCreateNewSong = createMutation(
-    async (transaction) => {
+    async (hash: `0x${string}`) => {
       try {
-        const tx = await provider().sendTransaction(transaction)
-        // wait() has the logic to return receipt once the transaction is mined
-        const receipt = await tx.wait()
+        const receipt = await waitForTransaction({
+          hash,
+        })
         return receipt
       } catch (e) {
         console.error(e)
@@ -155,13 +145,10 @@ export function useListSong() {
 
   async function onSubmitNewSong(args: { formValues: FormValues }) {
     try {
-      const signer = provider()?.getSigner()
-      if (!signer) console.error('Connect your wallet')
       /**
        * Prepare data
        */
       const { uriMetadata } = await prepareData(args?.formValues)
-
       /**
        * Smart contract interaction
        */

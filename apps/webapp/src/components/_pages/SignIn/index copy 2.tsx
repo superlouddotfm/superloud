@@ -1,4 +1,4 @@
-import { Switch, Match, Show, createEffect } from 'solid-js'
+import { Switch, Match, Show } from 'solid-js'
 import { createForm } from '@felte/solid'
 import { validator } from '@felte/validator-zod'
 import { passwordlessSignInSchema as schema } from '~/schemas/passwordless-sign-in'
@@ -38,11 +38,11 @@ export const SignIn = () => {
               Signing you in, one moment...
             </Match>
             <Match when={mutationSignIn.isSuccess && isAuthenticated() === true}>
-              <IconCheck class=" shrink-0 text-positive-10 w-6 mie-1ex stroke-2" />
+              <IconCheck class="animate-appear shrink-0 text-positive-10 w-6 mie-1ex stroke-2" />
               You're all set ! Ready to rock ?
             </Match>
             <Match when={mutationSignIn.isError}>
-              <IconError class=" shrink-0 text-negative-10 w-6 mie-1ex stroke-2" />
+              <IconError class="animate-appear shrink-0 text-negative-10 w-6 mie-1ex stroke-2" />
               Oops, something went wrong.
             </Match>
           </Switch>
@@ -50,12 +50,12 @@ export const SignIn = () => {
         <p class="text-xs text-neutral-6 pt-1 pb-2 ">
           <Switch>
             <Match when={mutationSignIn.isIdle || (mutationSignIn.isSuccess && isAuthenticated() === false)}>
-              <span class="">
-                You can connect to Superloud using your in-browser wallet or with your favourite social account.
+              <span class="animate-appear">
+                You can connect to Superloud using a magic link, Twitch, or your injected wallet.
               </span>
             </Match>
             <Match when={mutationSignIn.isLoading}>
-              <span class="">
+              <span class="animate-appear">
                 <Switch>
                   <Match when={mutationSignIn.variables?.method === 'email_passwordless'}>
                     Please check your inbox - there should be an unread{' '}
@@ -69,20 +69,20 @@ export const SignIn = () => {
               </span>
             </Match>
             <Match when={mutationSignIn.isSuccess && isAuthenticated() === true}>
-              <span class="">
+              <span class="animate-appear">
                 You're connected and ready to use Superloud ! You can start listing songs, have a fun karaoke session or
                 join challenges.
               </span>
             </Match>
             <Match when={mutationSignIn.isError}>
-              <span class="">Please try connecting again.</span>
+              <span class="animate-appear">Please try connecting again.</span>
             </Match>
           </Switch>
         </p>
 
         <Show when={!mutationSignIn.isSuccess || (mutationSignIn.isSuccess && isAuthenticated() === false)}>
           <div class="pt-2">
-            {/*<form use:form>
+            <form use:form>
               <div class="gap-2 pb-3 flex flex-col">
                 <FormInput
                   class="w-full"
@@ -104,18 +104,17 @@ export const SignIn = () => {
                   <span class="pis-1ex">Send me a magic link !</span>
                 </Button>
               </div>
-  </form>*/}
+            </form>
             <div>
-              {/*<p class="text-center p-3 border-t border-accent-4 text-neutral-6 font-bold text-[0.75rem] ">
+              <p class="text-center p-3 border-t border-accent-4 text-neutral-6 font-bold text-[0.75rem] ">
                 Or continue with :
-</p>*/}
-              <p class="text-center p-3  text-neutral-6 font-bold text-[0.75rem] ">Continue with :</p>
-              <div class="flex flex-col gap-4 justify-center items-center">
+              </p>
+              <div class="flex flex-wrap gap-4 justify-center items-center">
                 <Button
                   isLoading={mutationSignIn.variables?.method === 'twitch' && mutationSignIn.isLoading}
-                  title="Continue with Twitch"
+                  title="Connect with Twitch"
                   intent="neutral-outline"
-                  class="w-full hover:!bg-[#9147FF] hover:!text-neutral-1 !border-[#9147FF] !text-[#271346]"
+                  class="aspect-square w-12 !p-0 h-12 !text-violet-900 !border-[#9147FF] hover:!bg-[#9147FF] hover:!border-[#9147FF] hover:!text-neutral-1 focus:!border-[#9147FF]"
                   type="button"
                   disabled={mutationSignIn.isLoading || !isReady()}
                   onClick={async () =>
@@ -127,13 +126,13 @@ export const SignIn = () => {
                   <Show when={!(mutationSignIn.variables?.method === 'twitch' && mutationSignIn.isLoading)}>
                     <IconTwitch class="w-5 h-5" />
                   </Show>
-                  <span class="pis-1ex">Continue with Twitch</span>
+                  <span class="sr-only">Connect with Twitch</span>
                 </Button>
                 <Button
                   isLoading={mutationSignIn.variables?.method === 'google' && mutationSignIn.isLoading}
-                  title="Continue with Google"
+                  title="Connect with Google"
                   intent="neutral-outline"
-                  class="w-full hover:!bg-[#DF4032] hover:!text-neutral-1 !border-[#DF4032] !text-[#46130e]"
+                  class="aspect-square w-12 !p-0 h-12 !text-orange-900 !border-[#DF4032] hover:!bg-[#DF4032] hover:!border-[#DF4032] hover:!text-neutral-1 focus:!border-[#DF4032]"
                   type="button"
                   disabled={mutationSignIn.isLoading || !isReady()}
                   onClick={async () =>
@@ -145,7 +144,7 @@ export const SignIn = () => {
                   <Show when={!(mutationSignIn.variables?.method === 'google' && mutationSignIn.isLoading)}>
                     <IconGoogle class="w-5 h-5" />
                   </Show>
-                  <span class="pis-1ex">Continue with Google</span>
+                  <span class="sr-only">Connect with Google</span>
                 </Button>
 
                 <Button
@@ -155,23 +154,23 @@ export const SignIn = () => {
                       method: 'injected',
                     })
                   }
-                  intent="neutral-outline"
-                  class="w-full !border-primary-10 hover:!bg-primary-10 hover:!text-primary-1 !hover:border-primary-5 !text-primary-12 !focus:border-primary-6"
+                  intent="primary-outline"
+                  class="aspect-square !text-primary-12 hover:!bg-primary-10 hover:!text-primary-1 relative w-12 !p-0 h-12 "
                   type="button"
                   disabled={mutationSignIn.isLoading || !isReady()}
-                  title="Continue with a browser-extension wallet  (Coinbase, MetaMask, Tally Ho...)"
+                  title="Connect with a browser-extension wallet  (Coinbase, MetaMask, Tally Ho...)"
                 >
                   <Show when={!(mutationSignIn.variables?.method === 'injected' && mutationSignIn.isLoading)}>
                     <IconBrowser class="w-6 h-6" />
                   </Show>
-                  <span class="pis-1ex">Continue with browser wallet</span>
+                  <span class="sr-only">Connect with browser-extension wallet (Coinbase, MetaMask, Tally Ho...)</span>
                 </Button>
               </div>
             </div>
           </div>
         </Show>
         <Show when={mutationSignIn.isSuccess && isAuthenticated() === true && currentUser()}>
-          <div class="">
+          <div class="animate-appear">
             <section class="text-primary-11 text-xs">
               <h3 class="text-primary-12 font-semibold">Logged in as: </h3>
               <p class="overflow-hidden text-ellipsis">{currentUser()?.name}</p>
@@ -181,7 +180,7 @@ export const SignIn = () => {
           </div>
         </Show>
         <p class="mt-6 px-6 border-t border-accent-4 text-center py-3 -mx-6 rounded-b-md bg-accent-3 text-accent-9 text-[0.7rem]">
-          Powered by Web3Auth
+          Social wallet powered by Arcana Network
         </p>
       </div>
     </>

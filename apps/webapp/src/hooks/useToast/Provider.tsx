@@ -7,7 +7,7 @@ export const Toast = (props: any) => {
   const api = createMemo(() => toast.connect(state, send, normalizeProps))
 
   return (
-    <div class="p-2 max-w-72 w-full text-sm shadow-xl rounded-md border animate-appear" {...api().rootProps}>
+    <div class="p-2 max-w-72 w-full text-sm shadow-xl rounded-md border" {...api().rootProps}>
       <h3 class="font-bold" {...api().titleProps}>
         {api().title}
       </h3>

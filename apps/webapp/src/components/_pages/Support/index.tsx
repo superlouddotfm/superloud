@@ -1,6 +1,6 @@
 import { createForm } from '@felte/solid'
 import { validator } from '@felte/validator-zod'
-import { formatDistance } from 'date-fns'
+import { formatDistance, fromUnixTime } from 'date-fns'
 import { supportSchema as schema } from '~/schemas/support'
 import { z } from 'zod'
 import { useCreateFlow } from '~/components/forms/FormSupport'
@@ -9,7 +9,7 @@ import { ethers } from 'ethers'
 import { useAuthentication } from '~/hooks/useAuthentication'
 import { createQuery } from '@tanstack/solid-query'
 import getArtistSupporterStream from '~/services/superfluid/getArtistSupporterStream'
-import { Show } from 'solid-js'
+import { Match, Switch } from 'solid-js'
 
 export const Support = (props: any) => {
   const { mutationCreateFlow } = useCreateFlow()
@@ -25,7 +25,9 @@ export const Support = (props: any) => {
 
         const result = await response.json()
 
-        return result
+        return {
+          ...result?.data,
+        }
       } catch (e) {
         console.error(e)
       }
@@ -55,7 +57,65 @@ export const Support = (props: any) => {
 
   return (
     <>
-      <FormSupport status={mutationCreateFlow.status} storeForm={storeForm} />
+      <Switch
+        fallback={
+          <>
+            <FormSupport status={mutationCreateFlow.status} storeForm={storeForm} />
+          </>
+        }
+      >
+        <Match
+          when={
+            currentUser()?.address &&
+            queryLatestStreamBetweenCurrentUserAndArtist?.status === 'success' &&
+            queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.createdAtTimestamp
+          }
+        >
+          <div class="space-y-2">
+            <p class="text-center text-accent-11 text-2xs">
+              {' '}
+              You're currently supporting this artist at a rate of{' '}
+              <span class="font-bold">
+                {parseFloat(
+                  ethers.utils.formatEther(
+                    queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.currentFlowRate,
+                  ),
+                ) *
+                  3600 *
+                  24 *
+                  30}{' '}
+                {queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.token?.symbol} per month
+              </span>{' '}
+              (you're automatically sending{' '}
+              {ethers.utils.formatEther(
+                queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.currentFlowRate,
+              )}
+              &nbsp;
+              {queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.token?.symbol}&nbsp; every second){' '}
+            </p>
+            <p class="text-center">
+              You've been supporting this artist for the past{' '}
+              <span class="font-bold">
+                {formatDistance(
+                  new Date(),
+                  fromUnixTime(
+                    parseInt(queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.createdAtTimestamp),
+                  ),
+                )}
+                .
+              </span>
+            </p>
+            <p class="text-center">
+              So far, you've sent them{' '}
+              <span class="font-bold text-primary-9">
+                {ethers.utils.formatEther(queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.deposit)}{' '}
+                {queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.token?.symbol}
+              </span>
+              .
+            </p>
+          </div>
+        </Match>
+      </Switch>
     </>
   )
 }

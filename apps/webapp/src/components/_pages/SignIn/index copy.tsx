@@ -1,4 +1,4 @@
-import { Switch, Match, Show, createEffect } from 'solid-js'
+import { Switch, Match, Show } from 'solid-js'
 import { createForm } from '@felte/solid'
 import { validator } from '@felte/validator-zod'
 import { passwordlessSignInSchema as schema } from '~/schemas/passwordless-sign-in'
@@ -38,11 +38,11 @@ export const SignIn = () => {
               Signing you in, one moment...
             </Match>
             <Match when={mutationSignIn.isSuccess && isAuthenticated() === true}>
-              <IconCheck class=" shrink-0 text-positive-10 w-6 mie-1ex stroke-2" />
+              <IconCheck class="animate-appear shrink-0 text-positive-10 w-6 mie-1ex stroke-2" />
               You're all set ! Ready to rock ?
             </Match>
             <Match when={mutationSignIn.isError}>
-              <IconError class=" shrink-0 text-negative-10 w-6 mie-1ex stroke-2" />
+              <IconError class="animate-appear shrink-0 text-negative-10 w-6 mie-1ex stroke-2" />
               Oops, something went wrong.
             </Match>
           </Switch>
@@ -50,12 +50,12 @@ export const SignIn = () => {
         <p class="text-xs text-neutral-6 pt-1 pb-2 ">
           <Switch>
             <Match when={mutationSignIn.isIdle || (mutationSignIn.isSuccess && isAuthenticated() === false)}>
-              <span class="">
+              <span class="animate-appear">
                 You can connect to Superloud using your in-browser wallet or with your favourite social account.
               </span>
             </Match>
             <Match when={mutationSignIn.isLoading}>
-              <span class="">
+              <span class="animate-appear">
                 <Switch>
                   <Match when={mutationSignIn.variables?.method === 'email_passwordless'}>
                     Please check your inbox - there should be an unread{' '}
@@ -69,13 +69,13 @@ export const SignIn = () => {
               </span>
             </Match>
             <Match when={mutationSignIn.isSuccess && isAuthenticated() === true}>
-              <span class="">
+              <span class="animate-appear">
                 You're connected and ready to use Superloud ! You can start listing songs, have a fun karaoke session or
                 join challenges.
               </span>
             </Match>
             <Match when={mutationSignIn.isError}>
-              <span class="">Please try connecting again.</span>
+              <span class="animate-appear">Please try connecting again.</span>
             </Match>
           </Switch>
         </p>
@@ -171,7 +171,7 @@ export const SignIn = () => {
           </div>
         </Show>
         <Show when={mutationSignIn.isSuccess && isAuthenticated() === true && currentUser()}>
-          <div class="">
+          <div class="animate-appear">
             <section class="text-primary-11 text-xs">
               <h3 class="text-primary-12 font-semibold">Logged in as: </h3>
               <p class="overflow-hidden text-ellipsis">{currentUser()?.name}</p>
@@ -181,7 +181,7 @@ export const SignIn = () => {
           </div>
         </Show>
         <p class="mt-6 px-6 border-t border-accent-4 text-center py-3 -mx-6 rounded-b-md bg-accent-3 text-accent-9 text-[0.7rem]">
-          Powered by Web3Auth
+          Social wallet powered by Arcana Network
         </p>
       </div>
     </>

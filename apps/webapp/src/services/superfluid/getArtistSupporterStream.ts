@@ -21,8 +21,15 @@ export async function getArtistSupporterStream(args: {
           first: 1
           where: {sender_contains_nocase: $sender, receiver_contains_nocase: $receiver, currentFlowRate_gt: 0}
         ) {
+          id
           currentFlowRate
           createdAtTimestamp
+          deposit
+          token {
+            name
+            symbol
+            underlyingAddress
+          }
         }
       }
       `,

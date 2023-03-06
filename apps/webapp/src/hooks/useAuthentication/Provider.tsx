@@ -1,25 +1,8 @@
-import { AuthProvider, CHAIN } from '@arcana/auth' //From npm
 import { createSignal, onMount, createContext } from 'solid-js'
-import { createMutation, createQuery } from '@tanstack/solid-query'
-import { ethers } from 'ethers'
-import { connect, disconnect, getAccount, getProvider, InjectedConnector } from '@wagmi/core'
-import { chains } from '~/config/wagmi'
-import { polygonMumbai } from '@wagmi/core/chains'
-
-const ARCANA_APP_ADDRESS = import.meta.env.VITE_ARCANA_APP_ADDRESS
-const RPC_URL_MUMBAI = import.meta.env.VITE_RPC_URL_MUMBAI_QUICKNODE
-const CONFIG_ARCANA_MUMBAI = {
-  chainId: CHAIN.POLYGON_MUMBAI_TESTNET,
-  rpcUrl: RPC_URL_MUMBAI,
-}
-const auth = new AuthProvider(ARCANA_APP_ADDRESS, {
-  //required
-  network: 'testnet',
-  position: 'left',
-  theme: 'light',
-  alwaysVisible: false,
-  chainConfig: CONFIG_ARCANA_MUMBAI,
-})
+import { createMutation } from '@tanstack/solid-query'
+import { connect, disconnect, getProvider } from '@wagmi/core'
+import client, { CONNECTORS, web3AuthInstance } from '~/config/wagmi'
+import { OpenloginAdapter } from '@web3auth/openlogin-adapter'
 
 export const ContextAuthentication = createContext()
 export const ProviderAuthentication = (props: any) => {
@@ -30,45 +13,37 @@ export const ProviderAuthentication = (props: any) => {
   const [provider, setProvider] = createSignal(null)
   const mutationSignIn = createMutation(
     async (args: {
-      method: 'injected' | 'walletConnect' | 'twitch' | 'magiclink'
+      method: 'injected' | 'walletConnect' | 'google' | 'twitch' | 'email_passwordless'
       email?: string
       connector?: 'injected' | 'walletConnect'
     }) => {
       try {
-        let _provider = null
-        switch (args.method) {
-          case 'twitch':
-            _provider = await auth.loginWithSocial('twitch')
-
-            setProvider(new ethers.providers.Web3Provider(_provider))
-            break
-          case 'magiclink':
-            _provider = await auth.loginWithLink(`${args?.email}`)
-            setProvider(new ethers.providers.Web3Provider(_provider))
-            break
-          case 'injected':
-            const connection = await connect({
-              chainId: polygonMumbai.id,
-              connector: new InjectedConnector({
-                chains: chains,
-              }),
-            })
-            _provider = connection?.provider
-            setProvider(new ethers.providers.Web3Provider(_provider))
-            break
-          default:
-            break
+        let connector = CONNECTORS[args?.method]
+        if (args?.method === 'email_passwordless' && args?.email) {
+          connector.loginParams.extraLoginOptions.login_hint = args.email
         }
-
-        let currentUser
-        if (args.method.includes('injected')) {
-          currentUser = await getAccount()
+        const connection = await connect({
+          chainId: 80001,
+          connector,
+        })
+        let user
+        if (['injected', 'walletConnect'].includes(args?.method)) {
+          user = {
+            address: connection?.account,
+          }
         } else {
-          currentUser = await auth.getUser()
+          const userInfo = await web3AuthInstance.getUserInfo()
+          user = {
+            ...userInfo,
+            address: connection?.account,
+          }
         }
-        if (!currentUser) throw new Error("Something went wrong and we couldn't sign you in.")
 
-        return { currentUser }
+        setProvider(connection?.provider)
+
+        return {
+          currentUser: user,
+        }
       } catch (e) {
         console.error(e)
         setProvider(null)
@@ -95,13 +70,6 @@ export const ProviderAuthentication = (props: any) => {
   )
 
   const mutationDisconnect = createMutation(async () => {
-    if (isAuthenticated()) {
-      if (['injected'].includes(method())) {
-        await disconnect()
-      } else {
-        await auth.logout()
-      }
-    }
     setCurrentUser()
     setIsAuthenticated(false)
     setMethod(null)
@@ -110,11 +78,6 @@ export const ProviderAuthentication = (props: any) => {
 
   onMount(async () => {
     try {
-      await auth.init()
-      const isLoggedInWithSocials = await auth.isLoggedIn()
-      if (isLoggedInWithSocials === true) {
-        await auth.logout()
-      }
       setIsReady(true)
     } catch (e) {
       console.error(e)

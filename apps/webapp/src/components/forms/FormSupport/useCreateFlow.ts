@@ -1,20 +1,22 @@
 import { createMutation, useQueryClient } from '@tanstack/solid-query'
-import { useAuthentication } from '~/hooks/useAuthentication'
 import { Framework } from '@superfluid-finance/sdk-core'
+import { fetchSigner, getNetwork, getProvider } from '@wagmi/core'
+import { useAuthentication } from '~/hooks/useAuthentication'
 
 export function useCreateFlow() {
-  const { provider } = useAuthentication()
   const queryClient = useQueryClient()
+  const { currentUser } = useAuthentication()
 
   // Create a money flow using Superfluid SDK
   const mutationCreateFlow = createMutation(
-    async (args: { recipient: `0x${string}`; flowRate: number; tokenSymbol: string }) => {
-      const signer = provider()?.getSigner()
-      const network = await provider().getNetwork()
-      const chainId = network?.chainId
+    async (args: { recipient: `0x${string}`; flowRate: number; tokenSymbol: string; sender: `0x${string}` }) => {
+      const signer = await fetchSigner()
+      const provider = await getProvider()
+      const network = await getNetwork()
+      const chainId = network?.chain?.id
       const sf = await Framework.create({
         chainId: Number(chainId),
-        provider: provider(),
+        provider: provider,
       })
 
       const superSigner = sf.createSigner({ signer: signer })
@@ -28,7 +30,7 @@ export function useCreateFlow() {
         })
 
         const result = await createFlowOperation.exec(superSigner)
-        console.log(result)
+        await result?.wait()
         return result
       } catch (error) {
         console.error(error)
@@ -39,6 +41,16 @@ export function useCreateFlow() {
         // Whether or not the transaction is successful, invalidate user balance query
         // this way we will refresh the balance
         queryClient.invalidateQueries(['balance-supertoken'])
+      },
+      onSuccess(data, variables) {
+        // Wait 5 sec, then refresh
+        setTimeout(() => {
+          queryClient.invalidateQueries([
+            'latest-stream-between-supporter-artist',
+            currentUser()?.address,
+            variables?.recipient,
+          ])
+        }, 5000)
       },
     },
   )

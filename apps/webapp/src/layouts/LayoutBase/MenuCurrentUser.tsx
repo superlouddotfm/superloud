@@ -40,7 +40,17 @@ export const MenuCurrentUser = () => {
   })
   return (
     <div>
-      <Button class="pointer-events-auto" intent="neutral-outline" scale="xs" {...api().triggerProps}>
+      <Button
+        class="pointer-events-auto max-w-42 overflow-hidden text-ellipsis"
+        intent="neutral-outline"
+        scale="xs"
+        {...api().triggerProps}
+      >
+        <Show when={currentUser()?.profileImage}>
+          <div class="pie-1ex -mis-4">
+            <img src={currentUser()?.profileImage} alt="" width="32" height="32" class=" h-8 rounded-full w-8" />
+          </div>
+        </Show>
         <Switch>
           <Match when={currentUser()?.name && currentUser()?.name !== ''}>{currentUser()?.name}</Match>
           <Match when={currentUser()?.email && currentUser()?.email !== ''}>{currentUser()?.email}</Match>
