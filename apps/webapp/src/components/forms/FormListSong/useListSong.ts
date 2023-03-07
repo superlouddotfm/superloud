@@ -2,14 +2,20 @@ import { createMutation, useQueryClient } from '@tanstack/solid-query'
 import { createOrEditSongSchema as schema } from '~/schemas/create-or-edit-song'
 import { z } from 'zod'
 import { ipfsClient } from '~/config/ipfs'
-import { ABI_SUPERLOUD_CATALOG, SUPERLOUD_CATALOG_CONTRACT_ADDRESS } from '~/abi/superloudCatalog'
+import {
+  ABI_SUPERLOUD_CATALOG,
+  SUPERLOUD_CATALOG_CONTRACT_ADDRESS,
+  SUPERLOUD_CATALOG_CONTRACT_CHAIN_ID,
+} from '~/abi/superloudCatalog'
 import { getUnixTime } from 'date-fns'
 import { useToast } from '~/hooks/useToast'
 import * as popover from '@zag-js/popover'
 import * as accordion from '@zag-js/accordion'
 import { useMachine, normalizeProps } from '@zag-js/solid'
 import { createEffect, createMemo, createUniqueId } from 'solid-js'
-import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core'
+import { waitForTransaction } from '@wagmi/core'
+import { GelatoRelayAdapter, MetaTransactionOptions } from '@safe-global/relay-kit'
+import { ethers } from 'ethers'
 
 interface FormValues extends z.infer<typeof schema> {}
 
@@ -44,32 +50,62 @@ export function useListSong() {
   const mutationWriteContractCreateNewSong = createMutation(
     async (args: { idOriginalVersion: string; uriMetadata: string }) => {
       try {
-        const config = await prepareWriteContract({
-          address: SUPERLOUD_CATALOG_CONTRACT_ADDRESS,
-          abi: ABI_SUPERLOUD_CATALOG,
-          functionName: 'listNewKaraokeVersion',
-          args: [args.idOriginalVersion, args.uriMetadata, getUnixTime(new Date())],
+        const provider = new ethers.providers.JsonRpcProvider(import.meta.env.VITE_SPONSOR_SAFE_RPC_ENDPOINT)
+        const signer = new ethers.Wallet(import.meta.env.VITE_SPONSOR_SAFE_OWNER_PK, provider)
+        const relayAdapter = new GelatoRelayAdapter(import.meta.env.VITE_GELATO_1BALANCE_API_KEY)
+        // Relay the transaction
+        const contractSuperloudCatalog = new ethers.Contract(
+          SUPERLOUD_CATALOG_CONTRACT_ADDRESS,
+          ABI_SUPERLOUD_CATALOG,
+          signer,
+        )
+
+        const { data } = await contractSuperloudCatalog.listNewKaraokeVersion(
+          args.idOriginalVersion,
+          args.uriMetadata,
+          getUnixTime(new Date()),
+        )
+        const options: MetaTransactionOptions = {
+          isSponsored: true, // This parameter is mandatory to use the 1Balance method
+        }
+        const relayed = await relayAdapter.relayTransaction({
+          target: SUPERLOUD_CATALOG_CONTRACT_ADDRESS, // the Safe address
+          encodedTransaction: data, // Encoded Safe transaction data
+          chainId: SUPERLOUD_CATALOG_CONTRACT_CHAIN_ID,
+          //@ts-ignore
+          options,
         })
-        const transaction = await writeContract(config)
-        return transaction.hash
+
+        return relayed
       } catch (e) {
         console.error(e)
       }
     },
     {
-      async onSuccess(data: `0x${string}`) {
-        await mutationTxWaitCreateNewSong.mutateAsync(data)
+      async onSuccess(data: { taskId: string }) {
+        await mutationTxWaitCreateNewSong.mutateAsync(data?.taskId)
       },
     },
   )
 
   const mutationTxWaitCreateNewSong = createMutation(
-    async (hash: `0x${string}`) => {
+    async (id: string) => {
+      console.log('id', id)
       try {
-        const receipt = await waitForTransaction({
-          hash,
-        })
-        return receipt
+        let isRelayed = false
+        let transactionHash
+        while (!isRelayed) {
+          const response = await fetch(`https://relay.gelato.digital/tasks/status/${id}`)
+          const result = await response.json()
+          if (result?.task?.taskState === 'ExecSuccess') {
+            transactionHash = result?.task?.transactionHash
+            isRelayed = true
+          } else {
+            await new Promise((resolve) => setTimeout(resolve, 1500))
+          }
+        }
+
+        return transactionHash
       } catch (e) {
         console.error(e)
       }

@@ -17,6 +17,11 @@ const appChains = [polygonMumbai]
 export const { chains, provider } = configureChains(appChains, [
   jsonRpcProvider({
     rpc: (chain) => ({
+      http: `${import.meta.env.VITE_RPC_URL_MUMBAI_POKT}`,
+    }),
+  }),
+  jsonRpcProvider({
+    rpc: (chain) => ({
       http: `${import.meta.env.VITE_RPC_URL_MUMBAI_QUICKNODE}`,
     }),
   }),

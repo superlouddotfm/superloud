@@ -1,4 +1,5 @@
 export const SUPERLOUD_CATALOG_CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_CATALOG
+export const SUPERLOUD_CATALOG_CONTRACT_CHAIN_ID = import.meta.env.VITE_CATALOG_CONTRACT_CHAIN_ID
 export const ABI_SUPERLOUD_CATALOG = [
   {
     inputs: [],

@@ -9,7 +9,6 @@ interface SongProps {
   metadata: SongMetadata
 }
 export const Song = (props: SongProps) => {
-
   return (
     <>
       <div class="md:mt-7 min-h-[70vh] py-7 flex overflow-hidden relative -mx-4 px-4 bg-accent-12">
