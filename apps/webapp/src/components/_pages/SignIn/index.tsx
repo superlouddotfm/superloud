@@ -1,4 +1,4 @@
-import { Switch, Match, Show, createEffect } from 'solid-js'
+import { Switch, Match, Show } from 'solid-js'
 import { createForm } from '@felte/solid'
 import { validator } from '@felte/validator-zod'
 import { passwordlessSignInSchema as schema } from '~/schemas/passwordless-sign-in'
@@ -7,6 +7,8 @@ import Button from '~/components/system/Button'
 import FormInput from '~/components/system/FormInput'
 import { IconBrowser, IconCheck, IconError, IconGoogle, IconSpinner, IconTwitch } from '~/components/system/Icons'
 import { useAuthentication } from '~/hooks/useAuthentication/useAuthentication'
+import { OnRampStripe } from '../Account/OnRampStripe'
+import { Identity } from './../Account/Identity'
 
 export const SignIn = () => {
   const { isReady, mutationSignIn, isAuthenticated, currentUser } = useAuthentication()
@@ -171,14 +173,10 @@ export const SignIn = () => {
           </div>
         </Show>
         <Show when={mutationSignIn.isSuccess && isAuthenticated() === true && currentUser()}>
-          <div class="">
-            <section class="text-primary-11 text-xs">
-              <h3 class="text-primary-12 font-semibold">Logged in as: </h3>
-              <p class="overflow-hidden text-ellipsis">{currentUser()?.name}</p>
-              <p class="overflow-hidden text-ellipsis">{currentUser()?.email}</p>
-              <p class="overflow-hidden text-ellipsis">{currentUser()?.address}</p>
-            </section>
-          </div>
+          <Identity />
+          <section class="mt-6">
+            <OnRampStripe />
+          </section>
         </Show>
         <p class="mt-6 px-6 border-t border-accent-4 text-center py-3 -mx-6 rounded-b-md bg-accent-3 text-accent-9 text-[0.7rem]">
           Powered by Web3Auth

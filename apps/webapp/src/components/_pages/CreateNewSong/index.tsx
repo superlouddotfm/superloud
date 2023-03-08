@@ -413,7 +413,7 @@ export const CreateNewSong = () => {
                                 <IconCheck class="w-5 h-5 mie-1ex" />
                               </Match>
                             </Switch>
-                            Blockchain interactions{' '}
+                            On-chain interactions{' '}
                             <IconDoubleChevronDown
                               classList={{
                                 'rotate-180': apiAccordionListSongStatus()?.value === 'transaction-1',
@@ -448,7 +448,7 @@ export const CreateNewSong = () => {
                               <Switch>
                                 <Match when={mutationWriteContractCreateNewSong.status !== 'loading'}>
                                   <span>
-                                    <span>Sign transaction in your wallet: &nbsp;</span>
+                                    <span>Relaying &nbsp;</span>
 
                                     <Show
                                       when={['success', 'error'].includes(mutationWriteContractCreateNewSong.status)}
@@ -459,7 +459,7 @@ export const CreateNewSong = () => {
                                 </Match>
 
                                 <Match when={mutationWriteContractCreateNewSong.status === 'loading'}>
-                                  <span>Action required: Sign transaction in your wallet</span>
+                                  <span>Relaying...</span>
                                 </Match>
                               </Switch>
                             </li>
@@ -509,7 +509,7 @@ export const CreateNewSong = () => {
                               <Match when={mutationTxWaitCreateNewSong?.isSuccess}>
                                 <div class="my-4 text-2xs rounded-md p-3 text-positive-11 border border-positive-5 bg-positive-3">
                                   <p class="font-semibold">
-                                    Your song was listed on the Superloud karaoke catalog successfully !
+                                    Song listed on the Superloud karaoke catalog successfully !
                                   </p>
                                 </div>
                               </Match>

@@ -380,7 +380,10 @@ export function useKaraokeControls(config: {
   })
 
   createEffect(() => {
-    if ([AudioState.STOPPED, AudioState.PAUSED, AudioState.COMPLETE].includes(instrumentalTrackAudio.state)) {
+    if (
+      !apiDialogSession().isOpen &&
+      [AudioState.STOPPED, AudioState.PAUSED, AudioState.COMPLETE].includes(instrumentalTrackAudio.state)
+    ) {
       stopRecording()
       apiPopoverRecorder().close()
       apiDialogSession().open()

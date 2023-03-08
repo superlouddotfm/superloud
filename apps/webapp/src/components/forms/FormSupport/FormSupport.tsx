@@ -1,6 +1,6 @@
 import { Framework } from '@superfluid-finance/sdk-core'
 import { createQuery } from '@tanstack/solid-query'
-import { fetchSigner, getProvider } from '@wagmi/core'
+import { fetchBalance, fetchSigner, getProvider } from '@wagmi/core'
 import { ethers } from 'ethers'
 import { Match, Show, splitProps, Switch } from 'solid-js'
 import Button from '~/components/system/Button'
@@ -44,9 +44,34 @@ export const FormSupport = (props: FormSupportProps) => {
       },
     },
   )
+  const queryGasTokenBalance = createQuery(
+    () => ['user-balance', currentUser()?.address],
+    async () => {
+      try {
+        const balance = await fetchBalance({
+          address: currentUser()?.address,
+        })
+
+        return balance
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    {
+      get enabled() {
+        return currentUser()?.address ? true : false
+      },
+    },
+  )
 
   return (
     <>
+      <Show when={parseFloat(queryGasTokenBalance.data?.formatted) === 0}>
+        <p class="text-start xs:text-center mt-6 mb-4 font-medium text-2xs bg-secondary-3 py-2 rounded-md mx-auto w-fit-content px-4 text-secondary-11">
+          You need enough <span class="font-bold">MATIC (gas tokens)</span> to perform this action ! <br />
+          To be able to support this artist directly, top-up your MATIC balance in your dashboard.
+        </p>
+      </Show>
       <div class="text-xs mb-6 max-w-prose mx-auto">
         <p class="">
           Superloud uses Superfluid and SuperTokens under the hood to transfer assets easily and in a secure manner.
@@ -136,7 +161,12 @@ export const FormSupport = (props: FormSupportProps) => {
         <div class="w-full mt-12 mx-auto flex flex-col">
           <Button
             isLoading={['loading', 'success'].includes(props.status)}
-            disabled={!currentUser()?.address || ['loading', 'success'].includes(props.status)}
+            disabled={
+              !currentUser()?.address ||
+              queryGasTokenBalance.isLoading ||
+              parseFloat(queryGasTokenBalance.data?.formatted) === 0 ||
+              ['loading', 'success'].includes(props.status)
+            }
             class="mx-auto"
             scale="sm"
             type="submit"

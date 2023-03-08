@@ -160,8 +160,9 @@ export const PlayKaraoke = (props: PlayKaraokeProps) => {
                   allow="autoplay; encrypted-media; picture-in-picture"
                 ></iframe>
                 <a
+                  target="_blank"
                   rel="nofollow noreferrer"
-                  href={`https://https://lvpr.tv/${searchParams?.playbackId}`}
+                  href={`https://lvpr.tv?v=${searchParams?.playbackId}`}
                   class="link py-6 text-center"
                 >
                   Open livestream in a new tab
