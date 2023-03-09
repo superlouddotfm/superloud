@@ -70,6 +70,7 @@ export const ProviderAuthentication = (props: any) => {
   )
 
   const mutationDisconnect = createMutation(async () => {
+    disconnect()
     setCurrentUser()
     setIsAuthenticated(false)
     setMethod(null)

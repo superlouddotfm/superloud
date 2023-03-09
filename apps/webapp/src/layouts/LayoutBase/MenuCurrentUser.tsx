@@ -1,3 +1,4 @@
+import { A } from '@solidjs/router'
 import { createQuery } from '@tanstack/solid-query'
 import { fetchBalance } from '@wagmi/core'
 import * as menu from '@zag-js/menu'
@@ -27,6 +28,7 @@ export const MenuCurrentUser = () => {
       }
     },
     {
+      refetchOnWindowFocus: false,
       get enabled() {
         return currentUser()?.address ? true : false
       },
@@ -81,6 +83,7 @@ export const MenuCurrentUser = () => {
                 {shortenEthereumAddress(currentUser()?.address)}
               </Show>
             </span>
+
             <Show when={queryTokenBalance?.isSuccess && queryTokenBalance?.data?.formatted}>
               <div class="pt-1 text-[0.75rem]">
                 <span class="text-primary-12">Balance:&nbsp;</span>
@@ -89,6 +92,14 @@ export const MenuCurrentUser = () => {
                 </span>
               </div>
             </Show>
+          </div>
+          <div>
+            <A
+              class="block border-b border-accent-5 data-[focus]:text-interactive-12 data-[focus]:bg-interactive-3 cursor-pointer py-1.5 px-3 text-start font-semibold w-full hover:bg-interactive-1 focus:bg-interactive-3 hover:text-interactive-11 focus:text-interactive-12"
+              href="/dashboard"
+            >
+              Dashboard
+            </A>
           </div>
           <button
             {...api().getItemProps({ id: 'logout' })}
