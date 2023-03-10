@@ -175,7 +175,16 @@ export const SignIn = () => {
         <Show when={mutationSignIn.isSuccess && isAuthenticated() === true && currentUser()}>
           <Identity />
           <section class="mt-6">
-            <OnRampStripe />
+            <div class="text-center bg-accent-3 flex flex-col items-center justify-center px-3 pt-6 pb-2 rounded-md">
+              <div class="w-full max-w-screen-2xs mx-auto">
+                <p class="font-bold">Want to send tips with crypto or organize challenges ?</p>
+                <p class="text-xs mb-4 pt-2 text-accent-10">
+                  You can easily buy crypto in a fast and secure way on Superloud via Stripe. <br />
+                  We recommend you acquire MATIC to use as gas tokens,
+                </p>
+                <OnRampStripe />
+              </div>
+            </div>
           </section>
         </Show>
         <p class="mt-6 px-6 border-t border-accent-4 text-center py-3 -mx-6 rounded-b-md bg-accent-3 text-accent-9 text-[0.7rem]">

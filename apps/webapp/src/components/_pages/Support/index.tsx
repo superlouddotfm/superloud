@@ -1,6 +1,6 @@
 import { createForm } from '@felte/solid'
 import { validator } from '@felte/validator-zod'
-import { formatDistance, fromUnixTime } from 'date-fns'
+import { differenceInSeconds, formatDistance, fromUnixTime } from 'date-fns'
 import { supportSchema as schema } from '~/schemas/support'
 import { z } from 'zod'
 import { useSuperfluidSDK } from '~/hooks/useSuperfluidSDK'
@@ -22,14 +22,26 @@ export const Support = (props: any) => {
     () => ['stream', currentUser()?.address, props?.address],
     async () => {
       try {
-        const response = await getArtistSupporterStream({
+        const result = await getArtistSupporterStream({
           addressArtist: props.address,
           addressSupporter: currentUser()?.address,
         })
+        const secondsSinceStreaming = differenceInSeconds(
+          new Date(),
+          fromUnixTime(parseInt(result?.data?.streams?.[0]?.createdAtTimestamp)),
+        )
 
-        const result = await response.json()
         setSupportingSinceTimestamp(fromUnixTime(parseInt(result?.data?.streams?.[0]?.createdAtTimestamp)))
-        setTotalSupportSent(ethers.utils.formatEther(result?.data?.streams?.[0]?.deposit))
+        setTotalSupportSent(
+          new Intl.NumberFormat('en-US', { maximumSignificantDigits: 6 }).format(
+            parseFloat(
+              ethers.utils.formatEther(
+                (parseFloat(result?.data?.streams?.[0]?.currentFlowRate.toString()) * secondsSinceStreaming).toString(),
+              ),
+            ),
+          ),
+        )
+
         if (result?.data) {
           return {
             ...result?.data,
@@ -98,14 +110,20 @@ export const Support = (props: any) => {
               {' '}
               You're currently supporting this artist at a rate of{' '}
               <span class="font-bold">
-                {parseFloat(
-                  ethers.utils.formatEther(
-                    queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.currentFlowRate,
+                {new Intl.NumberFormat('en-US', { maximumSignificantDigits: 6 }).format(
+                  parseFloat(
+                    ethers.utils.formatEther(
+                      (
+                        parseFloat(
+                          queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.currentFlowRate.toString(),
+                        ) *
+                        3600 *
+                        24 *
+                        30
+                      ).toString(),
+                    ),
                   ),
-                ) *
-                  3600 *
-                  24 *
-                  30}{' '}
+                )}{' '}
                 {queryLatestStreamBetweenCurrentUserAndArtist?.data?.streams?.[0]?.token?.symbol} per month
               </span>{' '}
               (you're automatically sending{' '}
@@ -133,6 +151,7 @@ export const Support = (props: any) => {
             <div class="pt-2 flex justify-center">
               <Button
                 isLoading={mutationDeleteFlow?.isLoading}
+                disabled={mutationDeleteFlow?.isLoading}
                 onClick={async () => {
                   await mutationDeleteFlow.mutateAsync({
                     recipient: props?.address,
@@ -163,3 +182,5 @@ export const Support = (props: any) => {
     </>
   )
 }
+
+export default Support

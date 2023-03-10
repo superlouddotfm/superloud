@@ -5,6 +5,7 @@ import * as menu from '@zag-js/menu'
 import { normalizeProps, useMachine } from '@zag-js/solid'
 import { createEffect, createMemo, createUniqueId, Match, Show, Switch } from 'solid-js'
 import Button from '~/components/system/Button'
+import { ROUTE_DASHBOARD } from '~/config/routes'
 import shortenEthereumAddress from '~/helpers/shortenEthereumAddress'
 import { useAuthentication } from '~/hooks/useAuthentication'
 
@@ -96,7 +97,7 @@ export const MenuCurrentUser = () => {
           <div>
             <A
               class="block border-b border-accent-5 data-[focus]:text-interactive-12 data-[focus]:bg-interactive-3 cursor-pointer py-1.5 px-3 text-start font-semibold w-full hover:bg-interactive-1 focus:bg-interactive-3 hover:text-interactive-11 focus:text-interactive-12"
-              href="/dashboard"
+              href={ROUTE_DASHBOARD}
             >
               Dashboard
             </A>

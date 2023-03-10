@@ -3,8 +3,7 @@ import { For, Show } from 'solid-js'
 import { ROUTE_KARAOKE_PLAY_SONG } from '~/config/routes'
 import callToAction from '~/design-system/call-to-action'
 import type { SongMetadata } from '~/services/superloud/catalog/getSongById'
-import { Support } from '../Support'
-
+import Support from '../Support'
 interface SongProps {
   metadata: SongMetadata
 }
@@ -125,8 +124,8 @@ export const Song = (props: SongProps) => {
           <ul class="flex overflow-x-auto gap-4">
             <For each={props?.metadata?.artist_profiles}>
               {(profile) => (
-                <li class="relative h-full focus-within:border-interactive-10 rounded-md border bg-accent-1 border-accent-4 p-6">
-                  <article class="text-2xs leading-loose items-start xs:items-center flex flex-col">
+                <li class="min-w-40 relative h-full focus-within:border-interactive-10 rounded-md border bg-accent-1 border-accent-4 p-6">
+                  <article class="text-2xs leading-loose items-center flex flex-col">
                     <img
                       src={profile?.node?.avatarUrl}
                       loading="lazy"

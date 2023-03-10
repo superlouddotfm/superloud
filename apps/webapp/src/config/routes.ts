@@ -1,5 +1,6 @@
 export const ROUTE_HOME = '/'
 export const ROUTE_SIGN_IN = '/sign-in'
+export const ROUTE_DASHBOARD = '/dashboard'
 
 export const ROUTE_CATALOG = '/catalog'
 export const ROUTE_CATALOG_SONG_NEW = '/catalog/new'

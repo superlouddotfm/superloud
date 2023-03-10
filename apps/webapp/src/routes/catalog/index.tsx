@@ -41,11 +41,11 @@ export default function Page() {
 
   return (
     <div class="flex flex-col flex-grow pt-12">
-      <div class="max-w-prose w-full mx-auto px-4">
+      <div class="max-w-prose w-full mx-auto">
         <h1 class="text-start xs:text-center text-2xl text-neutral-9 font-bold mb-1">Be Superloud.</h1>
       </div>
       <main>
-        <div class="max-w-prose w-full mx-auto px-4">
+        <div class="max-w-prose w-full mx-auto">
           <p class="text-start mt-2  text-neutral-7 font-medium">
             Superloud is a karaoke platform that leverages web3 technology to connect fans, communities and artists.
           </p>
@@ -64,7 +64,7 @@ export default function Page() {
             />
           </div>
         </div>
-        <div class="pt-20 w-full mx-auto px-4 2xs:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl 3xl:max-w-screen-2xl">
+        <div class="pt-20 w-full mx-auto 2xs:max-w-screen-sm lg:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl 3xl:max-w-screen-2xl">
           <Switch>
             <Match when={queryCatalog.isError}>Something went wrong</Match>
             <Match when={queryCatalog.isLoading}>

@@ -8,7 +8,7 @@ export async function getArtistSupporterStream(args: {
   addressSupporter: `0x${string}`
 }) {
   //@ts-ignore
-  const result = await fetch(SUBGRAPH_SUPERFLUID_URL, {
+  const response = await fetch(SUBGRAPH_SUPERFLUID_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,6 +39,7 @@ export async function getArtistSupporterStream(args: {
       },
     }),
   })
+  const result = await response.json()
 
   return result
 }

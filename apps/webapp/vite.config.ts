@@ -17,4 +17,7 @@ export default defineConfig({
     }),
     solid({ ssr: false }),
   ],
+  ssr: {
+    noExternal: ['@superfluid-finance/sdk-core'],
+  },
 })

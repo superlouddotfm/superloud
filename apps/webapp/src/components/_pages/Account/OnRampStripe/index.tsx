@@ -61,12 +61,7 @@ export const OnRampStripe = () => {
     }
   })
   return (
-    <div class="animate-appear text-center bg-accent-3 flex flex-col items-center justify-center px-3 pt-6 pb-6 rounded-md">
-      <p class="font-bold">Want to send tips with crypto or organize challenges ?</p>
-      <p class="text-xs mb-4 pt-2 text-accent-10">
-        You can easily buy crypto in a fast and secure way on Superloud via Stripe. <br />
-        We recommend you acquire MATIC to use as gas tokens,
-      </p>
+    <>
       <Show when={!mutationOpenOnRampWidget?.isSuccess}>
         <Button
           isLoading={mutationOpenOnRampWidget?.isLoading}
@@ -93,7 +88,7 @@ export const OnRampStripe = () => {
         class="mt-3"
         id="stripe-root"
       />
-    </div>
+    </>
   )
 }
 

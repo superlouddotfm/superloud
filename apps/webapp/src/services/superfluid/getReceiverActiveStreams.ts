@@ -5,7 +5,7 @@ import { SUBGRAPH_SUPERFLUID_URL } from './config'
  */
 export async function getReceiverActiveStreams(args: { address: `0x${string}` }) {
   //@ts-ignore
-  const result = await fetch(SUBGRAPH_SUPERFLUID_URL, {
+  const response = await fetch(SUBGRAPH_SUPERFLUID_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,6 +22,12 @@ export async function getReceiverActiveStreams(args: { address: `0x${string}` })
           currentFlowRate
           createdAtTimestamp
           deposit
+          receiver {
+            id
+          }
+          sender {
+            id
+          }
           token {
             name
             symbol
@@ -35,6 +41,7 @@ export async function getReceiverActiveStreams(args: { address: `0x${string}` })
       },
     }),
   })
+  const result = await response.json()
 
   return result
 }

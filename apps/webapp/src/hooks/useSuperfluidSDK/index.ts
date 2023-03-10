@@ -2,7 +2,7 @@ import { createMutation, useQueryClient } from '@tanstack/solid-query'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { fetchSigner, getNetwork, getProvider } from '@wagmi/core'
 import { useAuthentication } from '~/hooks/useAuthentication'
-import { useToast } from '../useToast'
+import { useToast } from '~/hooks/useToast'
 import type { Signer } from '@wagmi/core'
 
 export function useSuperfluidSDK() {
@@ -69,6 +69,7 @@ export function useSuperfluidSDK() {
         mutationDeleteFlow.reset()
         // Wait 5 sec, then refresh
         setTimeout(() => {
+          queryClient.invalidateQueries(['streams-sender', currentUser()?.address])
           queryClient.invalidateQueries(['stream', currentUser()?.address, variables?.recipient])
         }, 5000)
       },
@@ -128,6 +129,7 @@ export function useSuperfluidSDK() {
 
         mutationCreateFlow.reset()
         queryClient.invalidateQueries(['stream', currentUser()?.address, variables?.recipient])
+        queryClient.invalidateQueries(['streams-sender', currentUser()?.address])
       },
     },
   )
