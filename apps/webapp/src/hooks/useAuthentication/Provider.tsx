@@ -1,11 +1,12 @@
 import { createSignal, onMount, createContext } from 'solid-js'
 import { createMutation } from '@tanstack/solid-query'
-import { connect, disconnect, getProvider } from '@wagmi/core'
-import client, { CONNECTORS, web3AuthInstance } from '~/config/wagmi'
-import { OpenloginAdapter } from '@web3auth/openlogin-adapter'
+import { connect, disconnect, signMessage } from '@wagmi/core'
+import  { CONNECTORS, web3AuthInstance } from '~/config/wagmi'
+import { usePolybase } from '../usePolybase'
 
 export const ContextAuthentication = createContext()
 export const ProviderAuthentication = (props: any) => {
+  const { db } = usePolybase()
   const [currentUser, setCurrentUser] = createSignal()
   const [isReady, setIsReady] = createSignal(false)
   const [method, setMethod] = createSignal(null)
@@ -17,7 +18,6 @@ export const ProviderAuthentication = (props: any) => {
       email?: string
       connector?: 'injected' | 'walletConnect'
     }) => {
-      try {
         let connector = CONNECTORS[args?.method]
         if (args?.method === 'email_passwordless' && args?.email) {
           connector.loginParams.extraLoginOptions.login_hint = args.email
@@ -44,12 +44,6 @@ export const ProviderAuthentication = (props: any) => {
         return {
           currentUser: user,
         }
-      } catch (e) {
-        console.error(e)
-        setProvider(null)
-        setMethod(null)
-        setIsAuthenticated(false)
-      }
     },
     {
       onSuccess(data, variables) {
@@ -57,11 +51,21 @@ export const ProviderAuthentication = (props: any) => {
         if (data?.currentUser) {
           setIsAuthenticated(true)
           setCurrentUser(data?.currentUser)
+          
+          db.signer(async (data: string) => {
+            const sig = await signMessage({
+              message: data
+            })
+            return { h: 'eth-personal-sign', sig }
+          })
+          
+
         } else {
           setIsAuthenticated(false)
         }
       },
       onError() {
+        console.error(e)
         setProvider(null)
         setMethod(null)
         setIsAuthenticated(false)

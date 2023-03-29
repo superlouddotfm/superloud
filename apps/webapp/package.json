@@ -22,6 +22,7 @@
     "@bundlr-network/client": "^0.10.5",
     "@felte/solid": "^1.2.7",
     "@felte/validator-zod": "^1.0.13",
+    "@polybase/client": "^0.3.38",
     "@safe-global/onramp-kit": "0.1.0-alpha.2",
     "@safe-global/relay-kit": "0.1.0-alpha.2",
     "@safe-global/safe-core-sdk": "^3.3.2",
@@ -81,6 +82,7 @@
     "tailwindcss-logical": "^3.0.0",
     "undici": "^5.15.1",
     "util": "^0.12.5",
+    "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },
   "engines": {

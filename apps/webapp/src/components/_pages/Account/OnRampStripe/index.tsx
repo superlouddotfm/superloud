@@ -25,7 +25,6 @@ export const OnRampStripe = () => {
   })
 
   const mutationOpenOnRampWidget = createMutation(async () => {
-    try {
       const sessionData = await safeOnRamp()?.open({
         walletAddress: currentUser()?.address,
         networks: ['gnosis'],
@@ -56,9 +55,6 @@ export const OnRampStripe = () => {
       })
       console.log(sessionData)
       return sessionData
-    } catch (e) {
-      console.error(e)
-    }
   })
   return (
     <>

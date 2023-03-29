@@ -38,8 +38,8 @@ export const OngoingStreams = () => {
               </tr>
             </thead>
             <tbody class="text-interactive-12 flex flex-col   divide-y divide-interactive-5">
-              <Show when={queryStreamsSender?.data?.length > 0}>
-                <For each={queryStreamsSender?.data}>
+              <Show when={queryStreamsSender?.data?.streams?.length > 0}>
+                <For each={queryStreamsSender?.data?.streams}>
                   {(stream) => (
                     <tr class="divide-i divide-interactive-4 text-ellipsis overflow-hidden grid gap-1 md:grid-cols-5">
                       <RowDataActiveStreamSender stream={stream} />

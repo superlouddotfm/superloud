@@ -27,7 +27,7 @@ export function useOngoingStreams() {
       get enabled() {
         return currentUser()?.address ? true : false
       },
-      select: async (data) => data?.data ?? data,
+      select: (data) => data?.data ?? data,
     },
   )
 

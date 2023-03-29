@@ -2,13 +2,13 @@ import { createQuery } from '@tanstack/solid-query'
 import { differenceInSeconds, formatDistance, fromUnixTime } from 'date-fns'
 import { ethers } from 'ethers'
 import { isAddress } from 'ethers/lib/utils.js'
-import { createEffect, Match, Show, Switch } from 'solid-js'
+import { Match, Show, Switch } from 'solid-js'
 import Button from '~/components/system/Button'
 import useSuperfluidSDK from '~/hooks/useSuperfluidSDK'
 import getArtistById from '~/services/spinamp/artists/getArtistById'
 import shortenEthereumAddress from '~/helpers/shortenEthereumAddress'
 
-export const RowDataActiveStreamSender = (props) => {
+export const RowDataActiveStreamSender = (props: any) => {
   const { mutationDeleteFlow } = useSuperfluidSDK()
 
   const queryArtistProfile = createQuery(
@@ -32,15 +32,14 @@ export const RowDataActiveStreamSender = (props) => {
 
   return (
     <>
-      <Show when={mutationDeleteFlow?.isSuccess === false}>
         <td class="flex items-baseline py-2 md:py-0.5 h-full px-3 text-ellipsis overflow-hidden">
           <div class="my-auto">
             <Show
-              fallback={shortenEthereumAddress(props?.stream?.artist?.address)}
+              fallback={shortenEthereumAddress(props?.stream?.receiver?.id)}
               when={queryArtistProfile?.data?.[0]?.node?.name && queryArtistProfile?.data?.[0]?.node?.name !== null}
             >
               <span>{queryArtistProfile?.data?.[0]?.node?.name} </span>&nbsp;
-              <span class="text-[0.75em]">({shortenEthereumAddress(props?.stream?.artist?.address)})</span>
+              <span class="text-[0.75em]">({shortenEthereumAddress(props?.stream?.receiver?.id)})</span>
             </Show>
           </div>
         </td>
@@ -98,7 +97,6 @@ export const RowDataActiveStreamSender = (props) => {
             </span>
           </Button>
         </td>
-      </Show>
     </>
   )
 }

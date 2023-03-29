@@ -26,7 +26,6 @@ export function useSuperfluidSDK() {
         }
       }
     }) => {
-      try {
         const signer = await fetchSigner()
         const provider = await getProvider()
         const network = await getNetwork()
@@ -48,9 +47,7 @@ export function useSuperfluidSDK() {
         const result = await createFlowOperation.exec(superSigner)
         await result?.wait()
         return result
-      } catch (error) {
-        console.error(error)
-      }
+
     },
     {
       onSettled() {
@@ -58,7 +55,7 @@ export function useSuperfluidSDK() {
         // this way we will refresh the balance
         queryClient.invalidateQueries(['balance-supertoken'])
       },
-      onSuccess(data, variables) {
+      async onSuccess(data, variables) {
         //@ts-ignore
         toast().create({
           title: variables?.toast?.success?.title,
@@ -68,10 +65,10 @@ export function useSuperfluidSDK() {
         })
         mutationDeleteFlow.reset()
         // Wait 5 sec, then refresh
-        setTimeout(() => {
-          queryClient.invalidateQueries(['streams-sender', currentUser()?.address])
-          queryClient.invalidateQueries(['stream', currentUser()?.address, variables?.recipient])
-        }, 5000)
+        setTimeout(async () => {
+          await queryClient.invalidateQueries(['streams-sender', currentUser()?.address])
+          await queryClient.invalidateQueries(['stream', currentUser()?.address, variables?.recipient])
+        }, 4000)
       },
     },
   )
@@ -88,7 +85,6 @@ export function useSuperfluidSDK() {
         }
       }
     }) => {
-      try {
         const signer = await fetchSigner()
         const provider = await getProvider()
         const network = await getNetwork()
@@ -110,15 +106,16 @@ export function useSuperfluidSDK() {
         await result?.wait()
 
         return result
-      } catch (error) {
-        console.error(error)
-      }
     },
     {
       onSettled() {
         queryClient.invalidateQueries(['balance-supertoken'])
       },
-      onSuccess(data, variables) {
+      async onSuccess(data, variables) {
+        setTimeout(async () => {
+          await queryClient.invalidateQueries(['streams-sender', currentUser()?.address])
+          await queryClient.invalidateQueries(['stream', currentUser()?.address, variables?.recipient])
+        }, 4000)
         //@ts-ignore
         toast().create({
           title: variables?.toast?.success?.title,
@@ -128,8 +125,6 @@ export function useSuperfluidSDK() {
         })
 
         mutationCreateFlow.reset()
-        queryClient.invalidateQueries(['stream', currentUser()?.address, variables?.recipient])
-        queryClient.invalidateQueries(['streams-sender', currentUser()?.address])
       },
     },
   )

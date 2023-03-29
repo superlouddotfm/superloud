@@ -1,9 +1,10 @@
 // @refresh reload
 import { QueryClientProvider } from '@tanstack/solid-query'
 import { Suspense } from 'solid-js'
-import { useLocation, A, Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start'
+import { useLocation, Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from 'solid-start'
 import { queryClient } from '~/config/query-client'
 import { ProviderAuthentication } from './hooks/useAuthentication'
+import { ProviderPolybase } from './hooks/usePolybase'
 import { LayoutBase } from './layouts/LayoutBase'
 import { Buffer } from 'buffer'
 import './root.css'
@@ -26,6 +27,8 @@ export default function Root() {
         <Suspense>
           <ErrorBoundary>
             <QueryClientProvider client={queryClient}>
+            <ProviderPolybase>
+
               <ProviderAuthentication>
                 <LayoutBase>
                   <Routes>
@@ -33,6 +36,7 @@ export default function Root() {
                   </Routes>
                 </LayoutBase>
               </ProviderAuthentication>
+              </ProviderPolybase>
             </QueryClientProvider>
           </ErrorBoundary>
         </Suspense>

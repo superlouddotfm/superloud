@@ -13,21 +13,12 @@ import * as popover from '@zag-js/popover'
 import * as accordion from '@zag-js/accordion'
 import { useMachine, normalizeProps } from '@zag-js/solid'
 import { createEffect, createMemo, createUniqueId } from 'solid-js'
-import { waitForTransaction } from '@wagmi/core'
 import { GelatoRelayAdapter, MetaTransactionOptions } from '@safe-global/relay-kit'
 import { ethers } from 'ethers'
+import uploadFileToIPFS from '~/helpers/uploadFileToIPFS'
 
 interface FormValues extends z.infer<typeof schema> {}
 
-async function uploadFileToIPFS(file: any) {
-  try {
-    const result = await ipfsClient.add(file)
-    const cid = result.path
-    return `ipfs://${cid}`
-  } catch (e) {
-    console.error(e)
-  }
-}
 
 export function useListSong() {
   const queryClient = useQueryClient()
@@ -49,7 +40,6 @@ export function useListSong() {
   })
   const mutationWriteContractCreateNewSong = createMutation(
     async (args: { idOriginalVersion: string; uriMetadata: string }) => {
-      try {
         const provider = new ethers.providers.JsonRpcProvider(import.meta.env.VITE_SPONSOR_SAFE_RPC_ENDPOINT)
         const signer = new ethers.Wallet(import.meta.env.VITE_SPONSOR_SAFE_OWNER_PK, provider)
         const relayAdapter = new GelatoRelayAdapter(import.meta.env.VITE_GELATO_1BALANCE_API_KEY)
@@ -77,9 +67,6 @@ export function useListSong() {
         })
 
         return relayed
-      } catch (e) {
-        console.error(e)
-      }
     },
     {
       async onSuccess(data: { taskId: string }) {
@@ -90,8 +77,6 @@ export function useListSong() {
 
   const mutationTxWaitCreateNewSong = createMutation(
     async (id: string) => {
-      console.log('id', id)
-      try {
         let isRelayed = false
         let transactionHash
         while (!isRelayed) {
@@ -106,9 +91,6 @@ export function useListSong() {
         }
 
         return transactionHash
-      } catch (e) {
-        console.error(e)
-      }
     },
     {
       onSuccess() {
@@ -123,7 +105,7 @@ export function useListSong() {
       onSettled() {
         // Whether or not the transaction is successful, invalidate user balance query
         // this way we will refresh the balance
-        queryClient.invalidateQueries(['user-balance'])
+        queryClient.invalidateQueries({queryKey: ['user-balance']})
       },
     },
   )

@@ -24,6 +24,8 @@ export const Dashboard = () => {
 
           <div class="pt-8">
             <h2 class="font-bold text-md">Your support</h2>
+            <p>You can find below the list of artists you're currently actively supporting, as well as the list of people that are currently supporting you.</p>
+            <p>You can find your complete list of ongoing Superfluid streams on the <a class="link" href="https://app.superfluid.finance/" target="_blank">Superfluid dashboard</a></p>
             <div class="pt-4">
               <OngoingStreams />
             </div>
